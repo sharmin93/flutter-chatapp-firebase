@@ -13,19 +13,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<HomePage> {
-  final TextEditingController _textController = TextEditingController();
   SharedPreferences? prefs;
-  bool? check;
+  bool check = false;
   @override
   void initState() {
     getPref();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _textController.dispose();
-    super.dispose();
   }
 
   getPref() async {
@@ -38,7 +31,6 @@ class _MyHomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     UdDesign.init(context);
-
     return Scaffold(
         appBar: AppBar(
           title: const Text('Chat app'),

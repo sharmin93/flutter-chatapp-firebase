@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,17 +18,6 @@ class UserScreen extends StatefulWidget {
 class _UserScreenState extends State<UserScreen> {
   final TextEditingController _textController = TextEditingController();
   late final SharedPreferences prefs;
-  final firebaseDB = FirebaseFirestore.instance;
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _textController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,11 +49,9 @@ class _UserScreenState extends State<UserScreen> {
               value: 20,
             ),
             UdBasicButton(
-              onTap: () {
-                addName(_textController.text);
-                firebaseDB
-                    .collection('userName')
-                    .add({'name': _textController.text});
+              onTap: () async {
+                final prefs = await SharedPreferences.getInstance();
+                prefs.setString('name', _textController.text);
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const ChatRoom()),

@@ -1,13 +1,14 @@
 {
   "project_info": {
     "project_number": "868733403188",
+    "firebase_url": "https://chatapp-48dce-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "chatapp-48dce",
     "storage_bucket": "chatapp-48dce.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:868733403188:android:60672dae6d31d459f28a61",
+        "mobilesdk_app_id": "1:868733403188:android:9b94195493fe2793f28a61",
         "android_client_info": {
           "package_name": "com.example.chat_app_using_firebase"
         }
@@ -29,6 +30,13 @@
             {
               "client_id": "868733403188-bbbfu15alvmu916ilgu6spjahdhehhdt.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "868733403188-h9ki6mmrru8gbh42c4i7g9sokitr9381.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "chatapp"
+              }
             }
           ]
         }
