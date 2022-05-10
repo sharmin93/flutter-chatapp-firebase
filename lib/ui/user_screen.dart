@@ -54,21 +54,22 @@ class _UserScreenState extends State<UserScreen> {
                 addNamePref(_textController.text).then((value) {
                   if (value != null && value != '') {
                     prefData = value;
+                    _textController.clear();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ChatRoom(
+                                prefNameData: prefData,
+                              )),
+                    );
                   }
                 });
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ChatRoom(
-                            prefNameData: prefData,
-                          )),
-                );
               },
               width: double.infinity,
               backgroundColor: Colors.blue,
               borderRadius: UdDesign.pt(4),
               height: UdDesign.pt(48),
-              title: "Submit request",
+              title: "Save",
               titleFontSize: UdDesign.fontSize(16),
             ),
           ],

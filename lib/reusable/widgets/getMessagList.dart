@@ -18,8 +18,6 @@ class GetMessageList extends StatelessWidget {
           final json = snapshot.value as Map<dynamic, dynamic>;
           final message = MessageModel.fromJson(json);
           return MessagesBody(
-            textMessage: message.textMessages.toString(),
-            dateTime: message.date!,
             prefNameData: prefNameData.toString(),
             messageModelData: message,
           );

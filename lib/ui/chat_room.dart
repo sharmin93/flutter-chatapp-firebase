@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:ud_design/ud_design.dart';
 import 'package:ud_widgets/widgets/buttons/udTapper.dart';
@@ -24,13 +23,12 @@ class _ChatRoomState extends State<ChatRoom> {
 
   @override
   Widget build(BuildContext context) {
-    print('sendChatRoom${widget.prefNameData}');
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.all(UdDesign.pt(16)),
         child: ChangeNotifierProvider(
-            create: (_) => MessageDataController(),
-            child: Consumer<MessageDataController>(
+            create: (_) => MessageController(),
+            child: Consumer<MessageController>(
               builder: (context, messageController, __) {
                 return Column(
                   children: [
@@ -42,9 +40,6 @@ class _ChatRoomState extends State<ChatRoom> {
                           width: UdDesign.pt(300),
                           child: UdBasicTextInputField(
                             onChanged: (_) {},
-                            textInputFormatters: [
-                              LengthLimitingTextInputFormatter(30),
-                            ],
                             controller: _messageTextController,
                             disableShadow: true,
                             borderColor: Colors.black,
