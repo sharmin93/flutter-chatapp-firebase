@@ -4,12 +4,22 @@ import 'models/message_model.dart';
 
 class MessagesData {
   DatabaseReference messageRef = FirebaseDatabase.instance.ref();
+  var ref;
   saveMessages(MessageModel message) {
     messageRef.child('messages').push().set(message.toJson());
   }
 
+  saveUser(MessageModel message) {
+    messageRef
+        .child('User')
+        .push()
+        .child('messages')
+        .push()
+        .set(message.toJson());
+  }
+
   getMessageQuery() {
-    var ref = messageRef.child('messages');
+    ref = messageRef.child('messages');
     return ref;
   }
 }

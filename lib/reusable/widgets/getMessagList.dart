@@ -7,8 +7,10 @@ import '../../ui/messages_body.dart';
 
 class GetMessageList extends StatelessWidget {
   final String? prefNameData;
+
   GetMessageList({Key? key, this.prefNameData}) : super(key: key);
   final messagesData = MessagesData();
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
