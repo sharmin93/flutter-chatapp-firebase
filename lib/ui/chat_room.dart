@@ -1,4 +1,3 @@
-import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -9,11 +8,11 @@ import 'package:ud_widgets/widgets/input/basic_text_input_field.dart';
 
 import '../controller/message_data_controller.dart';
 import '../message_data.dart';
-import '../models/message_model.dart';
 import '../reusable/widgets/getMessagList.dart';
 
 class ChatRoom extends StatefulWidget {
-  const ChatRoom({Key? key}) : super(key: key);
+  final String? prefNameData;
+  const ChatRoom({Key? key, this.prefNameData}) : super(key: key);
 
   @override
   State<ChatRoom> createState() => _ChatRoomState();
@@ -25,6 +24,7 @@ class _ChatRoomState extends State<ChatRoom> {
 
   @override
   Widget build(BuildContext context) {
+    print('sendChatRoom${widget.prefNameData}');
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.all(UdDesign.pt(16)),
@@ -34,7 +34,7 @@ class _ChatRoomState extends State<ChatRoom> {
               builder: (context, messageController, __) {
                 return Column(
                   children: [
-                    GetMessageList(),
+                    GetMessageList(prefNameData: widget.prefNameData),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -66,8 +66,9 @@ class _ChatRoomState extends State<ChatRoom> {
                         UdTapper(
                           child: const Icon(Icons.send_sharp),
                           onTap: () {
-                            messageController
-                                .sendMessages(_messageTextController.text);
+                            messageController.sendMessages(
+                                _messageTextController.text,
+                                widget.prefNameData);
                             _messageTextController.clear();
                           },
                         ),
@@ -80,6 +81,4 @@ class _ChatRoomState extends State<ChatRoom> {
       ),
     );
   }
-
-
 }

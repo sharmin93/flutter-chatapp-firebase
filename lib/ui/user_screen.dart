@@ -17,7 +17,8 @@ class UserScreen extends StatefulWidget {
 
 class _UserScreenState extends State<UserScreen> {
   final TextEditingController _textController = TextEditingController();
-  late final SharedPreferences prefs;
+  SharedPreferences? prefs;
+  String? prefData;
 
   @override
   Widget build(BuildContext context) {
@@ -49,12 +50,18 @@ class _UserScreenState extends State<UserScreen> {
               value: 20,
             ),
             UdBasicButton(
-              onTap: () async {
-                final prefs = await SharedPreferences.getInstance();
-                prefs.setString('name', _textController.text);
+              onTap: () {
+                addNamePref(_textController.text).then((value) {
+                  if (value != null && value != '') {
+                    prefData = value;
+                  }
+                });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ChatRoom()),
+                  MaterialPageRoute(
+                      builder: (context) => ChatRoom(
+                            prefNameData: prefData,
+                          )),
                 );
               },
               width: double.infinity,
@@ -70,8 +77,8 @@ class _UserScreenState extends State<UserScreen> {
     );
   }
 
-  addName(String name) async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString('name', name);
+  addNamePref(String name) async {
+    prefs = await SharedPreferences.getInstance();
+    prefs?.setString('name', name);
   }
 }

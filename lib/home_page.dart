@@ -15,17 +15,24 @@ class HomePage extends StatefulWidget {
 class _MyHomePageState extends State<HomePage> {
   SharedPreferences? prefs;
   bool check = false;
+  String? prefData;
   @override
   void initState() {
-    getPref();
+    getPref().then((value) {
+      if (value != null && value != '') {
+        if (kDebugMode) {
+          print('value$value');
+        }
+        check = true;
+      }
+    });
     super.initState();
   }
 
   getPref() async {
     prefs = await SharedPreferences.getInstance();
-    prefs?.get('name');
-    check = true;
-    return check;
+    prefData = prefs?.get('name') as String?;
+    return prefData;
   }
 
   @override
@@ -33,8 +40,11 @@ class _MyHomePageState extends State<HomePage> {
     UdDesign.init(context);
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Chat app'),
+          centerTitle: true,
+          title: const Text('Chat Group'),
         ),
-        body: check == true ? const ChatRoom() : const UserScreen());
+        body: check == true
+            ? ChatRoom(prefNameData: prefData)
+            : const UserScreen());
   }
 }

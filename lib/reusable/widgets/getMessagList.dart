@@ -6,7 +6,8 @@ import '../../models/message_model.dart';
 import '../../ui/messages_body.dart';
 
 class GetMessageList extends StatelessWidget {
-  GetMessageList({Key? key}) : super(key: key);
+  final String? prefNameData;
+  GetMessageList({Key? key, this.prefNameData}) : super(key: key);
   final messagesData = MessagesData();
   @override
   Widget build(BuildContext context) {
@@ -19,6 +20,8 @@ class GetMessageList extends StatelessWidget {
           return MessagesBody(
             textMessage: message.textMessages.toString(),
             dateTime: message.date!,
+            prefNameData: prefNameData.toString(),
+            messageModelData: message,
           );
         },
       ),
