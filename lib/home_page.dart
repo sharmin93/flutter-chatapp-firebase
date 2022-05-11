@@ -1,5 +1,4 @@
-import 'package:chat_app_using_firebase/ui/chat_room.dart';
-import 'package:chat_app_using_firebase/ui/user_screen.dart';
+import 'package:chat_app_using_firebase/views/users/user_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,8 +42,12 @@ class _MyHomePageState extends State<HomePage> {
           centerTitle: true,
           title: const Text('Chat Group'),
         ),
-        body: check == true
-            ? ChatRoom(prefNameData: prefData)
-            : const UserScreen());
+        body: const UserScreen()
+
+        ///previous views for group chat storing name to sharedPref///
+        // check == true
+        //     ? ChatRoom(prefNameData: prefData)
+        //     : const UserScreen()
+        );
   }
 }

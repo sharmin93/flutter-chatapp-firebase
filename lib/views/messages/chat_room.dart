@@ -5,9 +5,9 @@ import 'package:ud_widgets/widgets/buttons/udTapper.dart';
 import 'package:ud_widgets/widgets/gaps/gapy.dart';
 import 'package:ud_widgets/widgets/input/basic_text_input_field.dart';
 
-import '../controller/message_data_controller.dart';
-import '../message_data.dart';
-import '../reusable/widgets/getMessagList.dart';
+import '../../controller/message_data_controller.dart';
+import '../../firebase_db_data.dart';
+import '../../reusable/widgets/getMessagList.dart';
 
 class ChatRoom extends StatefulWidget {
   final String? prefNameData;
@@ -19,7 +19,7 @@ class ChatRoom extends StatefulWidget {
 
 class _ChatRoomState extends State<ChatRoom> {
   final TextEditingController _messageTextController = TextEditingController();
-  final messagesData = MessagesData();
+  final messagesData = FirebaseDbData();
 
   @override
   Widget build(BuildContext context) {
