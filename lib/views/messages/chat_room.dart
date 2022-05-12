@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ud_design/ud_design.dart';
+import 'package:ud_widgets/widgets/appbars/appbar.dart';
 import 'package:ud_widgets/widgets/buttons/udTapper.dart';
+import 'package:ud_widgets/widgets/cards/card.dart';
 import 'package:ud_widgets/widgets/gaps/gapy.dart';
 import 'package:ud_widgets/widgets/input/basic_text_input_field.dart';
 
 import '../../controller/message_data_controller.dart';
 import '../../firebase_db_data.dart';
 import '../../reusable/widgets/getMessagList.dart';
+import '../../utilities/constants/colors.dart';
 
 class ChatRoom extends StatefulWidget {
   final String? prefNameData;
@@ -24,6 +27,28 @@ class _ChatRoomState extends State<ChatRoom> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: UdAppBar(
+        context: context,
+        customLeft: UdTapper(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: UdCard(
+            paddingHorizontal: 0,
+            paddingVertical: 0,
+            height: UdDesign.pt(35),
+            width: UdDesign.pt(35),
+            borderColor: ProjectColors.black,
+            borderRadius: UdDesign.pt(5),
+            backgroundColor: Colors.transparent,
+            child: Icon(
+              Icons.arrow_back,
+              color: ProjectColors.black,
+              size: UdDesign.pt(24),
+            ),
+          ),
+        ),
+      ),
       body: Padding(
         padding: EdgeInsets.all(UdDesign.pt(16)),
         child: ChangeNotifierProvider(

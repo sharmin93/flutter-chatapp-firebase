@@ -1,3 +1,4 @@
+import 'package:chat_app_using_firebase/utilities/constants/colors.dart';
 import 'package:chat_app_using_firebase/views/users/user_list_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,8 @@ import '../../controller/user_list_controller.dart';
 import '../../firebase_db_data.dart';
 
 class UserScreen extends StatefulWidget {
-  const UserScreen({Key? key}) : super(key: key);
+  final String? prefNameData;
+  const UserScreen({Key? key, this.prefNameData}) : super(key: key);
 
   @override
   State<UserScreen> createState() => _UserScreenState();
@@ -29,8 +31,28 @@ class _UserScreenState extends State<UserScreen> {
           child: Consumer<UserListController>(
             builder: (context, userListController, __) {
               return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  UserListScreen(),
+                  UdGapY(
+                    value: 40,
+                  ),
+                  UdText(
+                    text: 'Chat',
+                    fontSize: UdDesign.fontSize(16),
+                    color: ProjectColors.blue,
+                  ),
+                  UdGapY(
+                    value: 8,
+                  ),
+                  UdText(
+                    text: widget.prefNameData.toString().toUpperCase(),
+                    color: ProjectColors.black,
+                    fontSize: UdDesign.fontSize(14),
+                  ),
+                  UdGapY(
+                    value: 10,
+                  ),
+                  UserListScreen(prefNameData: widget.prefNameData),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -59,7 +81,9 @@ class _UserScreenState extends State<UserScreen> {
                       UdTapper(
                         child: const Icon(Icons.add_circle_outline),
                         onTap: () {
-                          userListController.sendUserInfo(_textController.text);
+                          userListController.addUserToList(
+                              widget.prefNameData, _textController.text);
+
                           _textController.clear();
                         },
                       ),

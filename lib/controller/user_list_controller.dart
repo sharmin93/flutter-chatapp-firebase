@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 
 import '../firebase_db_data.dart';
 import '../models/users_info_model.dart';
@@ -7,12 +6,22 @@ import '../models/users_info_model.dart';
 class UserListController extends ChangeNotifier {
   final firebaseDbData = FirebaseDbData();
 
-  sendUserInfo(emailId) {
-    final userInfo = UsersInfoModel(emailId);
+  addUser(userEmail) {
+    final userInfo = UsersInfoModel(userEmail);
     if (kDebugMode) {
-      print('emailId${userInfo.userEmailId}');
+      print('messagesPrefName${userInfo.userEmailId}');
     }
-    firebaseDbData.saveUser(userInfo);
+    firebaseDbData.saveUserDb(userInfo);
     notifyListeners();
+  }
+
+  addUserToList(emailId, String text) {
+    if (text != emailId) {
+      final userInfo = UsersInfoModel(emailId);
+      if (kDebugMode) {
+        print('emailId${userInfo.userEmailId}');
+      }
+      firebaseDbData.saveUserDb(userInfo);
+    }
   }
 }

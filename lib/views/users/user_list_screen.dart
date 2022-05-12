@@ -6,7 +6,8 @@ import '../../firebase_db_data.dart';
 import 'components/user_list_body.dart';
 
 class UserListScreen extends StatelessWidget {
-  UserListScreen({Key? key}) : super(key: key);
+  final String? prefNameData;
+  UserListScreen({Key? key, this.prefNameData}) : super(key: key);
   final userInfoData = FirebaseDbData();
 
   @override
@@ -18,8 +19,7 @@ class UserListScreen extends StatelessWidget {
           final json = snapshot.value as Map<dynamic, dynamic>;
           final userInfoData = UsersInfoModel.fromJson(json);
           return UserListBody(
-            userInfo: userInfoData,
-          );
+              userInfo: userInfoData, prefNameData: prefNameData);
         },
       ),
     );

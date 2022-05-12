@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ud_design/ud_design.dart';
 
+import 'login_page.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -38,16 +40,12 @@ class _MyHomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     UdDesign.init(context);
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: const Text('Chat Group'),
-        ),
-        body: const UserScreen()
 
         ///previous views for group chat storing name to sharedPref///
-        // check == true
-        //     ? ChatRoom(prefNameData: prefData)
-        //     : const UserScreen()
-        );
+        body: check == true
+            ? UserScreen(
+                prefNameData: prefData,
+              )
+            : const LogInPage());
   }
 }
