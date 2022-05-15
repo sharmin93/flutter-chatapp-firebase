@@ -41,7 +41,7 @@ class UserListBody extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               UdText(
-                text: userInfo.userEmailId ?? '',
+                text: userInfo.userEmailId!=''? userInfo.userEmailId:'nmnmn',
                 fontSize: UdDesign.fontSize(12),
                 fontWeight: FontWeight.w500,
                 color: ProjectColors.blue,
