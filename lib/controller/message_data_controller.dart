@@ -9,15 +9,4 @@ class MessageController extends ChangeNotifier {
   final messagesData = FirebaseDbData();
   UsersInfoModel usersInfoModel = UsersInfoModel();
 
-  sendMessages(receiver, sender, String text, {emailId, userNameData}) {
-    final messages =
-        MessageModel(text, DateTime.now(), userNameData, receiver, sender);
-    if (kDebugMode) {
-      print('messageTextMessage${messages.textMessages}');
-      print('messagesDate${messages.date}');
-      print('messagesPrefName${messages.name}');
-    }
-    messagesData.saveMessagesToFireStoreDb(messages);
-    notifyListeners();
-  }
 }

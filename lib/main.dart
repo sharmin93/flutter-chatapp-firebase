@@ -9,6 +9,7 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
+const String userEmail="sadia@yopmail.com";
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 

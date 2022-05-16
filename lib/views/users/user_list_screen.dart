@@ -2,30 +2,24 @@ import 'package:chat_app_using_firebase/models/users_info_model.dart';
 import 'package:flutter/material.dart';
 
 import '../../firebase_db_data.dart';
+import '../../main.dart';
 import '../messages/chat_room.dart';
 
 class UserListScreen extends StatefulWidget {
-  final String? prefNameData;
-
-  UserListScreen({Key? key, this.prefNameData}) : super(key: key);
+  UserListScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<UserListScreen> createState() => _UserListScreenState();
 }
 
 class _UserListScreenState extends State<UserListScreen> {
-  late final userInfoData = FirebaseDbData();
+  late final firebaseData = FirebaseDbData();
   UsersInfoModel? usersInfoModel;
-  List userList = ['fly.com', 'fig.com', 'ass.com'];
-  @override
-  // void initState() {
-  //   userInfoData.getUserByEmail(widget.prefNameData).then((value) {
-  //     usersInfoModel = value;
-  //     setState(() {});
-  //   });
-  //   super.initState();
-  // }
+  List userList = ['fly.com', 'fig.com', 'check.com'];
 
+  @override
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -39,14 +33,37 @@ class _UserListScreenState extends State<UserListScreen> {
                       InkWell(
                         child: Text(userList[index].toString()),
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ChatRoom(
-                                  prefNameData: widget.prefNameData,
-                                  selectedUserData: userList[index].toString()),
-                            ),
-                          );
+                          firebaseData
+                              .getConversationId(
+                                  userEmail, userList[index].toString())
+                              .then((value) {
+                            if (value == null) {
+                              firebaseData
+                                  .createConversation(
+                                      userEmail, userList[index].toString())
+                                  .then((createValue) {
+                                if (createValue != null) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ChatRoom(
+                                        conversationId: createValue,
+                                      ),
+                                    ),
+                                  );
+                                }
+                              });
+                            } else {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ChatRoom(
+                                    conversationId: value,
+                                  ),
+                                ),
+                              );
+                            }
+                          });
                         },
                       ),
                     ],

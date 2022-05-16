@@ -37,15 +37,12 @@ class _MyHomePageState extends State<HomePage> {
   }
 
   @override
+  // ignore: prefer_const_constructors
   Widget build(BuildContext context) {
     UdDesign.init(context);
-    return Scaffold(
+    return const Scaffold(
 
         ///previous views for group chat storing name to sharedPref///
-        body: check == true
-            ? UserDummyScreen(
-                prefNameData: prefData,
-              )
-            : const LogInPage());
+        body:  UserDummyScreen());
   }
 }

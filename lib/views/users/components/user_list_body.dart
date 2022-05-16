@@ -24,8 +24,8 @@ class UserListBody extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ChatRoom(
-                prefNameData: prefNameData,
+              builder: (context) =>ChatRoom(
+              conversationId: "123",
               ),
             ),
           );

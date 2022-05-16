@@ -5,43 +5,54 @@ import 'package:firebase_database/firebase_database.dart';
 import 'models/users_info_model.dart';
 
 class FirebaseDbData {
-  DatabaseReference messageRef = FirebaseDatabase.instance.ref();
-  FirebaseDatabase db = FirebaseDatabase.instance;
   FirebaseFirestore fireStoreDb = FirebaseFirestore.instance;
-  late DatabaseReference keyRef;
+  String CollectionConversation ="conversations";
 
-  saveUserToFireStoreDb(UsersInfoModel usersInfoModel) {
-    fireStoreDb
-        .collection('users')
-        .doc(usersInfoModel.userEmailId)
-        .set(usersInfoModel.toJson());
+  Future<String?> getConversationId(String sender, String receiver) async {
+    var snapshot = await fireStoreDb
+        .collection(CollectionConversation)
+        .where("sender", isEqualTo: sender)
+        .where("receiver", isEqualTo: receiver).get();
+    if(snapshot.size == 0){
+      snapshot = await FirebaseFirestore
+          .instance.collection(CollectionConversation)
+          .where("sender", isEqualTo: receiver)
+          .where("receiver", isEqualTo: sender).get();
+    }
+
+    if (snapshot.size == 0 ){
+      return null; // no existing conversation. have to create new one
+    }
+    return snapshot.docs.first.id; // have existing conversation
   }
 
-  saveMessagesToFireStoreDb(MessageModel messageModel) {
-    fireStoreDb.collection('chats').doc().set(messageModel.toJson());
+  Future<String?> createConversation(String sender, String receiver) async {
+    // todo : have to check if already have a existing conversation
+
+    MessageConversationModel messageConversationModel = MessageConversationModel();
+    messageConversationModel.messages =[];
+    messageConversationModel.sender = sender;
+    messageConversationModel.receiver = receiver;
+
+    var ref =  await fireStoreDb.collection(CollectionConversation).add(messageConversationModel.toJson());
+    return ref.id; // have existing conversation
   }
-  //
-  // saveMessages(MessageModel message) {
-  //   db.ref('/messages').push().set(message.toJson());
-  // }
-  //
-  // getMessageQuery() {
-  //   DatabaseReference ref = messageRef.child('messages');
-  //   return ref;
-  // }
 
-  // getUserQuery() {
-  //   DatabaseReference userRef = messageRef.child('users');
-  //   return userRef;
-  // }
-
-  Future<UsersInfoModel?> getUserByEmail(emailId) async {
-    var value = await fireStoreDb.collection('users').doc(emailId).get();
-    if (!value.exists) {
+  Future<MessageConversationModel?> getConversationById(String conversationId) async{
+    var dataSnapshot = await fireStoreDb.collection(CollectionConversation).doc(conversationId).get();
+    if(dataSnapshot.exists){
+      return MessageConversationModel.fromJson(dataSnapshot.data()!);
+    } else {
       return null;
     }
-    return UsersInfoModel.fromJson(value.data()!);
   }
+  sendMessage(String conversationId, Messages messages) {
+    fireStoreDb.collection(CollectionConversation).doc(conversationId).update({"messages": FieldValue.arrayUnion([messages.toJson()])});
+
+  }
+
+
+
 
   getMessage() async {
     var collection = FirebaseFirestore.instance.collection('chats');
@@ -53,4 +64,5 @@ class FirebaseDbData {
       return value;
     }
   }
+
 }

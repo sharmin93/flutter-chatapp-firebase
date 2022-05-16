@@ -8,10 +8,10 @@ import 'package:ud_widgets/ud_widgets.dart';
 
 import '../../controller/user_list_controller.dart';
 import '../../firebase_db_data.dart';
+import '../../main.dart';
 
 class UserDummyScreen extends StatefulWidget {
-  final String? prefNameData;
-  const UserDummyScreen({Key? key, this.prefNameData}) : super(key: key);
+  const UserDummyScreen({Key? key}) : super(key: key);
 
   @override
   State<UserDummyScreen> createState() => _UserDummyScreenState();
@@ -45,16 +45,14 @@ class _UserDummyScreenState extends State<UserDummyScreen> {
                     value: 8,
                   ),
                   UdText(
-                    text: widget.prefNameData.toString(),
+                    text: userEmail,
                     color: ProjectColors.black,
                     fontSize: UdDesign.fontSize(14),
                   ),
                   UdGapY(
                     value: 10,
                   ),
-                  UserListScreen(
-                    prefNameData: widget.prefNameData,
-                  ),
+                  UserListScreen(),
                 ],
               );
             },

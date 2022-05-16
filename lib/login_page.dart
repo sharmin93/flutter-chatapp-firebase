@@ -65,19 +65,19 @@ class _LogInPageState extends State<LogInPage> {
                   title: 'save',
                   onTap: () {
                     //TODo
-                    userListController.addUser(signInTextController.text);
-                    addNamePref(signInTextController.text).then(
-                      (value) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => UserScreen(
-                              prefNameData: value.toString(),
-                            ),
-                          ),
-                        );
-                      },
-                    );
+                    // userListController.addUser(signInTextController.text);
+                    // addNamePref(signInTextController.text).then(
+                    //   (value) {
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //         builder: (context) => UserScreen(
+                    //           prefNameData: value.toString(),
+                    //         ),
+                    //       ),
+                    //     );
+                    //   },
+                    // );
                   },
                 )
               ],

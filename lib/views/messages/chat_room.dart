@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ud_design/ud_design.dart';
@@ -10,17 +11,17 @@ import 'package:ud_widgets/widgets/input/basic_text_input_field.dart';
 
 import '../../controller/message_data_controller.dart';
 import '../../firebase_db_data.dart';
+import '../../main.dart';
+import '../../models/message_model.dart';
 import '../../reusable/widgets/getMessagList.dart';
 import '../../utilities/constants/colors.dart';
 
 class ChatRoom extends StatefulWidget {
-  final String? prefNameData;
-  final String? selectedUserData;
+  final String? conversationId;
 
-  const ChatRoom({
+  ChatRoom({
     Key? key,
-    this.prefNameData,
-    this.selectedUserData,
+    this.conversationId,
   }) : super(key: key);
 
   @override
@@ -29,7 +30,19 @@ class ChatRoom extends StatefulWidget {
 
 class _ChatRoomState extends State<ChatRoom> {
   final TextEditingController _messageTextController = TextEditingController();
-  final messagesData = FirebaseDbData();
+  final firebaseData = FirebaseDbData();
+  MessageConversationModel? messageConversationModel;
+
+  @override
+  void initState() {
+    firebaseData.getConversationById(widget.conversationId!).then((value) {
+      if (value != null) {
+        messageConversationModel = value;
+        setState(() {});
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +69,7 @@ class _ChatRoomState extends State<ChatRoom> {
           ),
         ),
         customMiddle: UdText(
-          text: 'Chat Room ${widget.prefNameData}',
+          text: 'Chat Room ${widget.conversationId}',
         ),
       ),
       body: Padding(
@@ -67,7 +80,7 @@ class _ChatRoomState extends State<ChatRoom> {
               builder: (context, messageController, __) {
                 return Column(
                   children: [
-                    GetMessageList(prefNameData: widget.prefNameData),
+                    GetMessageList(messageConversationModel),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -96,11 +109,13 @@ class _ChatRoomState extends State<ChatRoom> {
                         UdTapper(
                           child: const Icon(Icons.send_sharp),
                           onTap: () {
-                            messageController.sendMessages(
-                              widget.selectedUserData,
-                              widget.prefNameData,
-                              _messageTextController.text,
-                            );
+                            //Todo
+                            Messages messages = Messages(
+                                text: _messageTextController.text,
+                                sender:userEmail,
+                                date: Timestamp.now());
+                            firebaseData.sendMessage(
+                                widget.conversationId!, messages);
                             _messageTextController.clear();
                           },
                         ),

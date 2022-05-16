@@ -53,7 +53,7 @@ class _UserScreenState extends State<UserScreen> {
                     value: 10,
                   ),
                   UserListScreen(
-                    prefNameData: widget.prefNameData,
+
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -83,12 +83,8 @@ class _UserScreenState extends State<UserScreen> {
                       UdTapper(
                         child: const Icon(Icons.add_circle_outline),
                         onTap: () {
-                          // userListController.getUserInfo(
-                          //     _textController.text, widget.prefNameData);
-                          userListController.getSearchedUserInfo(
-                              _textController.text,
-                              widget.prefNameData,
-                              context);
+                          //Todo
+
                           _textController.clear();
                         },
                       ),
