@@ -1,4 +1,4 @@
-import 'package:chat_app_using_firebase/views/users/user_screen.dart';
+import 'package:chat_app_using_firebase/views/users/user_dummy_list.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,7 +43,7 @@ class _MyHomePageState extends State<HomePage> {
 
         ///previous views for group chat storing name to sharedPref///
         body: check == true
-            ? UserScreen(
+            ? UserDummyScreen(
                 prefNameData: prefData,
               )
             : const LogInPage());

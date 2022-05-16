@@ -13,19 +13,18 @@ class UsersInfoModel {
     if (json['conversations'] != null) {
       conversations = <Conversation>[];
       json['conversations'].forEach((v) {
-        conversations!.add(new Conversation.fromJson(v));
+        conversations!.add(Conversation.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['userEmailId'] = this.userEmailId;
-    data['id'] = this.id;
-    data['name'] = this.name;
-    if (this.conversations != null) {
-      data['conversations'] =
-          this.conversations!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['userEmailId'] = userEmailId;
+    data['id'] = id;
+    data['name'] = name;
+    if (conversations != null) {
+      data['conversations'] = conversations!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -36,8 +35,7 @@ class Conversation {
   String? conversationId;
   String? conversationName;
 
-  Conversation(
-      {this.otherEmailId, this.conversationId, this.conversationName});
+  Conversation({this.otherEmailId, this.conversationId, this.conversationName});
 
   Conversation.fromJson(Map<String, dynamic> json) {
     otherEmailId = json['otherEmailId'];
@@ -47,9 +45,9 @@ class Conversation {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['otherEmailId'] = this.otherEmailId;
-    data['conversationId'] = this.conversationId;
-    data['conversationName'] = this.conversationName;
+    data['otherEmailId'] = otherEmailId;
+    data['conversationId'] = conversationId;
+    data['conversationName'] = conversationName;
     return data;
   }
 }

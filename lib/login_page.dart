@@ -72,7 +72,7 @@ class _LogInPageState extends State<LogInPage> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => UserScreen(
-                              prefNameData: prefData,
+                              prefNameData: value.toString(),
                             ),
                           ),
                         );

@@ -1,30 +1,37 @@
-import 'package:chat_app_using_firebase/views/messages/messages_body.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
+import 'package:chat_app_using_firebase/models/users_info_model.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../firebase_db_data.dart';
-import '../../models/message_model.dart';
 
-class GetMessageList extends StatelessWidget {
+class GetMessageList extends StatefulWidget {
   final String? prefNameData;
 
-  GetMessageList({Key? key, this.prefNameData}) : super(key: key);
+  const GetMessageList({Key? key, this.prefNameData}) : super(key: key);
+
+  @override
+  State<GetMessageList> createState() => _GetMessageListState();
+}
+
+class _GetMessageListState extends State<GetMessageList> {
   final messagesData = FirebaseDbData();
+  UsersInfoModel? usersInfoModel;
+  String? receiver;
+  Map? conversationData;
+  @override
+  void initState() {
+    messagesData.getMessage().then((value) {
+      print('valueId${value}');
+      conversationData = value;
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: FirebaseAnimatedList(
-        query: messagesData.getMessageQuery(),
-        itemBuilder: (context, snapshot, animation, index) {
-          final json = snapshot.value as Map<dynamic, dynamic>;
-          final message = MessageModel.fromJson(json);
-          return MessagesBody(
-            prefNameData: prefNameData.toString(),
-            messageModelData: message,
-          );
-        },
-      ),
+    return Column(
+      children: [
+        Text('id'),
+      ],
     );
   }
 }

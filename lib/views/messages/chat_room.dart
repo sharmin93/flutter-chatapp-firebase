@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ud_design/ud_design.dart';
+import 'package:ud_widgets/ud_widgets.dart';
 import 'package:ud_widgets/widgets/appbars/appbar.dart';
 import 'package:ud_widgets/widgets/buttons/udTapper.dart';
 import 'package:ud_widgets/widgets/cards/card.dart';
@@ -14,7 +15,13 @@ import '../../utilities/constants/colors.dart';
 
 class ChatRoom extends StatefulWidget {
   final String? prefNameData;
-  const ChatRoom({Key? key, this.prefNameData}) : super(key: key);
+  final String? selectedUserData;
+
+  const ChatRoom({
+    Key? key,
+    this.prefNameData,
+    this.selectedUserData,
+  }) : super(key: key);
 
   @override
   State<ChatRoom> createState() => _ChatRoomState();
@@ -47,6 +54,9 @@ class _ChatRoomState extends State<ChatRoom> {
               size: UdDesign.pt(24),
             ),
           ),
+        ),
+        customMiddle: UdText(
+          text: 'Chat Room ${widget.prefNameData}',
         ),
       ),
       body: Padding(
@@ -87,8 +97,10 @@ class _ChatRoomState extends State<ChatRoom> {
                           child: const Icon(Icons.send_sharp),
                           onTap: () {
                             messageController.sendMessages(
-                                _messageTextController.text,
-                                widget.prefNameData);
+                              widget.selectedUserData,
+                              widget.prefNameData,
+                              _messageTextController.text,
+                            );
                             _messageTextController.clear();
                           },
                         ),
