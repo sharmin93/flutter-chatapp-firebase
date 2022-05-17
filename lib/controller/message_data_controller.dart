@@ -1,12 +1,51 @@
-import 'package:chat_app_using_firebase/models/message_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 import '../firebase_db_data.dart';
-import '../models/users_info_model.dart';
+import '../main.dart';
+import '../models/message_model.dart';
+import '../views/messages/chat_room.dart';
 
 class MessageController extends ChangeNotifier {
-  final messagesData = FirebaseDbData();
-  UsersInfoModel usersInfoModel = UsersInfoModel();
+  MessageConversationModel? messageConversationModel;
 
+  final firebaseData = FirebaseDbData();
+  String? selectedUser;
+
+  checkMessagesConversations({selectedUser, context}) {
+    firebaseData.getConversationId(userEmail, selectedUser).then((value) {
+      if (value == null) {
+        firebaseData
+            .createConversation(userEmail, selectedUser)
+            .then((createValue) {
+          if (createValue != null) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChatRoom(
+                  conversationId: createValue,
+                ),
+              ),
+            );
+          }
+        });
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ChatRoom(
+              conversationId: value,
+            ),
+          ),
+        );
+      }
+    });
+  }
+
+  sendMessage({String? text, String? conversationId}) {
+    Messages messages =
+        Messages(text: text, sender: userEmail, date: Timestamp.now());
+    firebaseData.saveMessageToDb(conversationId!, messages);
+  }
 }

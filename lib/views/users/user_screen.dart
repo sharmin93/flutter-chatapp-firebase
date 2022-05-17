@@ -52,9 +52,7 @@ class _UserScreenState extends State<UserScreen> {
                   UdGapY(
                     value: 10,
                   ),
-                  UserListScreen(
-
-                  ),
+                  const UserListScreen(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -84,7 +82,6 @@ class _UserScreenState extends State<UserScreen> {
                         child: const Icon(Icons.add_circle_outline),
                         onTap: () {
                           //Todo
-
                           _textController.clear();
                         },
                       ),

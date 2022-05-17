@@ -11,4 +11,5 @@ class ProjectColors {
   static Color redWithoutOpacity = Colors.red;
   static const Color blue = Color(0xFF0076DD);
   static const Color black = Colors.black;
+  static const Color transparent = Colors.transparent;
 }

@@ -1,25 +1,23 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:chat_app_using_firebase/main.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ud_design/ud_design.dart';
 import 'package:ud_widgets/ud_widgets.dart';
-import 'package:ud_widgets/widgets/appbars/appbar.dart';
 import 'package:ud_widgets/widgets/buttons/udTapper.dart';
-import 'package:ud_widgets/widgets/cards/card.dart';
 import 'package:ud_widgets/widgets/gaps/gapy.dart';
 import 'package:ud_widgets/widgets/input/basic_text_input_field.dart';
 
 import '../../controller/message_data_controller.dart';
 import '../../firebase_db_data.dart';
-import '../../main.dart';
 import '../../models/message_model.dart';
 import '../../reusable/widgets/getMessagList.dart';
 import '../../utilities/constants/colors.dart';
+import '../users/user_inbox_screen.dart';
 
 class ChatRoom extends StatefulWidget {
   final String? conversationId;
 
-  ChatRoom({
+  const ChatRoom({
     Key? key,
     this.conversationId,
   }) : super(key: key);
@@ -35,12 +33,6 @@ class _ChatRoomState extends State<ChatRoom> {
 
   @override
   void initState() {
-    firebaseData.getConversationById(widget.conversationId!).then((value) {
-      if (value != null) {
-        messageConversationModel = value;
-        setState(() {});
-      }
-    });
     super.initState();
   }
 
@@ -51,25 +43,47 @@ class _ChatRoomState extends State<ChatRoom> {
         context: context,
         customLeft: UdTapper(
           onTap: () {
-            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const UserInboxScreen()),
+            );
           },
-          child: UdCard(
-            paddingHorizontal: 0,
-            paddingVertical: 0,
-            height: UdDesign.pt(35),
-            width: UdDesign.pt(35),
-            borderColor: ProjectColors.black,
-            borderRadius: UdDesign.pt(5),
-            backgroundColor: Colors.transparent,
-            child: Icon(
-              Icons.arrow_back,
-              color: ProjectColors.black,
-              size: UdDesign.pt(24),
-            ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              UdCard(
+                paddingHorizontal: 0,
+                paddingVertical: 0,
+                height: UdDesign.pt(25),
+                width: UdDesign.pt(25),
+                borderColor: ProjectColors.transparent,
+                borderRadius: UdDesign.pt(1),
+                backgroundColor: Colors.transparent,
+                child: Icon(
+                  Icons.arrow_back,
+                  color: ProjectColors.white,
+                  size: UdDesign.pt(24),
+                ),
+              ),
+              UdShape(
+                size: UdDesign.pt(30),
+                radius: UdDesign.pt(20),
+                color: ProjectColors.blue,
+                child: Icon(
+                  Icons.person_rounded,
+                  color: ProjectColors.white,
+                  size: UdDesign.pt(25),
+                ),
+              ),
+              UdGapX(
+                value: 4,
+              ),
+              UdText(
+                text: userEmail.replaceAll('@yopmail.com', ''),
+                color: ProjectColors.white,
+              ),
+            ],
           ),
-        ),
-        customMiddle: UdText(
-          text: 'Chat Room ${widget.conversationId}',
         ),
       ),
       body: Padding(
@@ -80,7 +94,10 @@ class _ChatRoomState extends State<ChatRoom> {
               builder: (context, messageController, __) {
                 return Column(
                   children: [
-                    GetMessageList(messageConversationModel),
+                    Expanded(
+                      child: GetMessageList(
+                          messageConversationModel, widget.conversationId),
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -110,12 +127,10 @@ class _ChatRoomState extends State<ChatRoom> {
                           child: const Icon(Icons.send_sharp),
                           onTap: () {
                             //Todo
-                            Messages messages = Messages(
+                            messageController.sendMessage(
                                 text: _messageTextController.text,
-                                sender:userEmail,
-                                date: Timestamp.now());
-                            firebaseData.sendMessage(
-                                widget.conversationId!, messages);
+                                conversationId: widget.conversationId);
+
                             _messageTextController.clear();
                           },
                         ),

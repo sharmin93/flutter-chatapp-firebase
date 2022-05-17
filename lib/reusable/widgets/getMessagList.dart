@@ -1,13 +1,19 @@
+import 'package:chat_app_using_firebase/controller/message_data_controller.dart';
+import 'package:chat_app_using_firebase/firebase_db_data.dart';
 import 'package:chat_app_using_firebase/models/message_model.dart';
-import 'package:chat_app_using_firebase/models/users_info_model.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:ud_widgets/ud_widgets.dart';
 
-import '../../firebase_db_data.dart';
+import '../../views/messages/messages_body.dart';
 
 class GetMessageList extends StatefulWidget {
- final MessageConversationModel? messageConversationModel;
-  const GetMessageList(this.messageConversationModel,
-      {Key? key})
+  final MessageConversationModel? messageConversationModel;
+  final String? conversationId;
+  final MessageController? controller;
+  const GetMessageList(this.messageConversationModel, this.conversationId,
+      {Key? key, this.controller})
       : super(key: key);
 
   @override
@@ -15,19 +21,37 @@ class GetMessageList extends StatefulWidget {
 }
 
 class _GetMessageListState extends State<GetMessageList> {
+  final FirebaseDbData firebaseDbData = FirebaseDbData();
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        widget.messageConversationModel != null?
-            Container(height: 100,
-              child: ListView.builder(shrinkWrap: true,
-                  itemCount: widget.messageConversationModel?.messages?.length,
-                  itemBuilder: (context,index) {
-                    return Expanded(child: Text('${widget.messageConversationModel?.messages![index].text}'));
-                  }),
-            ):Container(),
-          ],
+        Expanded(
+          child: StreamBuilder(
+            stream: firebaseDbData.getQueryMessages(widget.conversationId),
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              var userMessagesDoc = snapshot.data;
+              if (!snapshot.hasData) {
+                return UdText(text: 'loading');
+              } else {
+                MessageConversationModel messagesDataModel =
+                    MessageConversationModel.fromJson(userMessagesDoc.data());
+
+                if (messagesDataModel.messages!.isEmpty) {
+                  if (kDebugMode) {
+                    print('no data${snapshot.hasData}');
+                  }
+                  return Center(child: UdText(text: 'No chats founds.'));
+                } else {
+                  return MessagesBody(
+                      messagesConversationsData: messagesDataModel);
+                }
+              }
+            },
+          ),
+        ),
+      ],
     );
   }
 }

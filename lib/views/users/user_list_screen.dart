@@ -1,12 +1,16 @@
 import 'package:chat_app_using_firebase/models/users_info_model.dart';
+import 'package:chat_app_using_firebase/utilities/constants/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:ud_design/ud_design.dart';
+import 'package:ud_widgets/ud_widgets.dart';
+import 'package:ud_widgets/widgets/cards/card.dart';
 
+import '../../controller/message_data_controller.dart';
 import '../../firebase_db_data.dart';
-import '../../main.dart';
-import '../messages/chat_room.dart';
 
 class UserListScreen extends StatefulWidget {
-  UserListScreen({
+  const UserListScreen({
     Key? key,
   }) : super(key: key);
 
@@ -17,68 +21,89 @@ class UserListScreen extends StatefulWidget {
 class _UserListScreenState extends State<UserListScreen> {
   late final firebaseData = FirebaseDbData();
   UsersInfoModel? usersInfoModel;
-  List userList = ['fly.com', 'fig.com', 'check.com'];
+  List userList = ['fly.com', 'fig.com', 'check.com', 'abc.com'];
 
   @override
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: userList != null
-            ? ListView.builder(
-                itemCount: userList.length,
-                itemBuilder: (context, index) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      InkWell(
-                        child: Text(userList[index].toString()),
-                        onTap: () {
-                          firebaseData
-                              .getConversationId(
-                                  userEmail, userList[index].toString())
-                              .then((value) {
-                            if (value == null) {
-                              firebaseData
-                                  .createConversation(
-                                      userEmail, userList[index].toString())
-                                  .then((createValue) {
-                                if (createValue != null) {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ChatRoom(
-                                        conversationId: createValue,
-                                      ),
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: UdText(
+          text: 'Contact List',
+          color: ProjectColors.white,
+        ),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+              child: userList.isNotEmpty
+                  ? ChangeNotifierProvider(
+                      create: (_) => MessageController(),
+                      child: Consumer<MessageController>(
+                        builder: (context, messageController, __) {
+                          return ListView.builder(
+                            itemCount: userList.length,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () {
+                                  messageController.checkMessagesConversations(
+                                      selectedUser: userList[index].toString(),
+                                      context: context);
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.all(UdDesign.pt(8)),
+                                  child: UdCard(
+                                    backgroundColor:
+                                        ProjectColors.grey40.withOpacity(0.2),
+                                    disableShadow: true,
+                                    paddingHorizontal: UdDesign.pt(16),
+                                    paddingVertical: UdDesign.pt(16),
+                                    borderRadius: UdDesign.pt(10),
+                                    child: Row(
+                                      children: [
+                                        UdShape(
+                                          size: UdDesign.pt(30),
+                                          radius: UdDesign.pt(20),
+                                          color: ProjectColors.blue,
+                                          child: Icon(
+                                            Icons.person_rounded,
+                                            color: ProjectColors.white,
+                                            size: UdDesign.pt(25),
+                                          ),
+                                        ),
+                                        UdGapX(
+                                          value: 10,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            UdText(
+                                                text: userList[index]
+                                                    .toString()
+                                                    .replaceAll(".com", '')),
+                                            UdGapY(
+                                              value: 4,
+                                            ),
+                                            UdText(
+                                                text:
+                                                    userList[index].toString()),
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                  );
-                                }
-                              });
-                            } else {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ChatRoom(
-                                    conversationId: value,
                                   ),
                                 ),
                               );
-                            }
-                          });
+                            },
+                          );
                         },
                       ),
-                    ],
-                  );
-                })
-            : const CircularProgressIndicator());
-    // FirebaseAnimatedList(
-    //   query: userInfoData.getOwnUser(),
-    //   itemBuilder: (context, snapshot, animation, index) {
-    //     final json = snapshot.value as Map<dynamic, dynamic>;
-    //     final userInfoData = UsersInfoModel.fromJson(json);
-    //     return UserListBody(
-    //         userInfo: userInfoData, prefNameData: widget.prefNameData);
-    //   },
-    // ),
-    // );
+                    )
+                  : const CircularProgressIndicator()),
+        ],
+      ),
+    );
   }
 }

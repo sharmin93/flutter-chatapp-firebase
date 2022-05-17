@@ -1,10 +1,8 @@
-import 'package:chat_app_using_firebase/views/users/user_dummy_list.dart';
+import 'package:chat_app_using_firebase/views/users/user_inbox_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ud_design/ud_design.dart';
-
-import 'login_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -17,6 +15,7 @@ class _MyHomePageState extends State<HomePage> {
   SharedPreferences? prefs;
   bool check = false;
   String? prefData;
+
   @override
   void initState() {
     getPref().then((value) {
@@ -40,9 +39,6 @@ class _MyHomePageState extends State<HomePage> {
   // ignore: prefer_const_constructors
   Widget build(BuildContext context) {
     UdDesign.init(context);
-    return const Scaffold(
-
-        ///previous views for group chat storing name to sharedPref///
-        body:  UserDummyScreen());
+    return const Scaffold(body: UserInboxScreen());
   }
 }
