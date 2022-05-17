@@ -68,7 +68,7 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
             UdGapY(
               value: 10,
             ),
-            Expanded(child: MessagedUserList()),
+            const Expanded(child: MessagedUserList()),
           ],
         ),
       ),

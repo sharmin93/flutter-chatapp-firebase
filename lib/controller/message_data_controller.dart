@@ -13,6 +13,8 @@ class MessageController extends ChangeNotifier {
   final firebaseData = FirebaseDbData();
   String? selectedUser;
 
+  List<MessageConversationModel> inboxList = [];
+
   checkMessagesConversations({selectedUser, context}) {
     firebaseData.getConversationId(userEmail, selectedUser).then((value) {
       if (value == null) {
@@ -47,5 +49,11 @@ class MessageController extends ChangeNotifier {
     Messages messages =
         Messages(text: text, sender: userEmail, date: Timestamp.now());
     firebaseData.saveMessageToDb(conversationId!, messages);
+  }
+
+  getMessagedUserList(String email) async {
+    var list = await firebaseData.getInboxMessages(email);
+    inboxList = list as List<MessageConversationModel>;
+    notifyListeners();
   }
 }

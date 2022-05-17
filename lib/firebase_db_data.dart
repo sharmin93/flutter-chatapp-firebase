@@ -1,6 +1,7 @@
 import 'package:chat_app_using_firebase/models/message_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:async/async.dart' show StreamGroup;
+import 'package:flutter/foundation.dart';
 class FirebaseDbData {
   FirebaseFirestore fireStoreDb = FirebaseFirestore.instance;
   String collectionConversation = "conversations";
@@ -26,7 +27,6 @@ class FirebaseDbData {
   }
 
   Future<String?> createConversation(String sender, String receiver) async {
-    // todo : have to check if already have a existing conversation
 
     MessageConversationModel messageConversationModel =
         MessageConversationModel();
@@ -59,10 +59,57 @@ class FirebaseDbData {
     });
   }
 
+  // Exception
   getQueryMessages(conversationId) {
     return FirebaseFirestore.instance
         .collection(collectionConversation)
         .doc(conversationId)
         .snapshots();
   }
+
+///using get() to  query ///
+  Future<List<MessageConversationModel>> getInboxMessages(email) async {
+    List<MessageConversationModel> returnValue =[];
+    var firstSnapshot = await fireStoreDb
+        .collection(collectionConversation)
+        .where("sender", isEqualTo: email).get();
+
+    var secondSnapshot = await fireStoreDb
+        .collection(collectionConversation)
+        .where("receiver", isEqualTo: email).get();
+
+    for (var conversation in firstSnapshot.docs) {
+      returnValue.add(MessageConversationModel.fromJson(conversation.data()));
+    }
+    for (var conversation in secondSnapshot.docs) {
+      returnValue.add(MessageConversationModel.fromJson(conversation.data()));
+    }
+    return returnValue;
+  }
+
+
+  ///using stream//
+  ///
+  // Stream<QuerySnapshot> getInboxMessages(email)  {
+  //
+  //   List<Stream<QuerySnapshot>> streams = [];
+  //
+  //   var firstQuery = fireStoreDb
+  //       .collection(collectionConversation)
+  //       .where("sender", isEqualTo: email).snapshots();
+  //
+  //
+  //   var secondQuery = fireStoreDb
+  //       .collection(collectionConversation)
+  //       .where("receiver", isEqualTo: email).snapshots();
+  //
+  //   streams.add(secondQuery);
+  //   streams.add(firstQuery);
+  //
+  //   Stream<QuerySnapshot> results = StreamGroup.merge(streams);
+  //
+  //
+  //   return results;
+  // }
+
 }

@@ -28,7 +28,8 @@ class _GetMessageListState extends State<GetMessageList> {
     return Column(
       children: [
         Expanded(
-          child: StreamBuilder(
+          child:
+          StreamBuilder(
             stream: firebaseDbData.getQueryMessages(widget.conversationId),
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
               var userMessagesDoc = snapshot.data;
