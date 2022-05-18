@@ -4,7 +4,7 @@ import 'package:chat_app_using_firebase/models/message_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:ud_widgets/ud_widgets.dart';
+import 'package:ud_widgets/widgets/texts/text.dart';
 
 import '../../views/messages/messages_body.dart';
 
@@ -12,6 +12,7 @@ class GetMessageList extends StatefulWidget {
   final MessageConversationModel? messageConversationModel;
   final String? conversationId;
   final MessageController? controller;
+
   const GetMessageList(this.messageConversationModel, this.conversationId,
       {Key? key, this.controller})
       : super(key: key);

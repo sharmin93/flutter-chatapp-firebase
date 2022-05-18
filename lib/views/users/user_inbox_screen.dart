@@ -44,10 +44,27 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  UdText(
-                    text: userEmail,
-                    color: ProjectColors.black,
-                    fontSize: UdDesign.fontSize(14),
+                  Row(
+                    children: [
+                      UdShape(
+                        size: UdDesign.pt(30),
+                        radius: UdDesign.pt(20),
+                        color: ProjectColors.blue,
+                        child: Icon(
+                          Icons.person_rounded,
+                          color: ProjectColors.white,
+                          size: UdDesign.pt(25),
+                        ),
+                      ),
+                      UdGapX(
+                        value: 8,
+                      ),
+                      UdText(
+                        text: userEmail,
+                        color: ProjectColors.black,
+                        fontSize: UdDesign.fontSize(14),
+                      ),
+                    ],
                   ),
                   InkWell(
                     onTap: () {
@@ -68,7 +85,7 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
             UdGapY(
               value: 10,
             ),
-            Expanded(child: MessagedUserList()),
+            const Expanded(child: MessagedUserList()),
           ],
         ),
       ),

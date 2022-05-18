@@ -1,9 +1,13 @@
+import 'dart:async';
+
+import 'package:async/async.dart' show StreamGroup;
 import 'package:chat_app_using_firebase/models/message_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirebaseDbData {
   FirebaseFirestore fireStoreDb = FirebaseFirestore.instance;
   String collectionConversation = "conversations";
+  List<Stream<QuerySnapshot>>? results;
 
   Future<String?> getConversationId(String sender, String receiver) async {
     var snapshot = await fireStoreDb
@@ -26,8 +30,6 @@ class FirebaseDbData {
   }
 
   Future<String?> createConversation(String sender, String receiver) async {
-    // todo : have to check if already have a existing conversation
-
     MessageConversationModel messageConversationModel =
         MessageConversationModel();
     messageConversationModel.messages = [];
@@ -64,5 +66,29 @@ class FirebaseDbData {
         .collection(collectionConversation)
         .doc(conversationId)
         .snapshots();
+  }
+
+  inboxQueryMessage(email) {
+    List<Stream<QuerySnapshot<Map<String, dynamic>>>> streams = [];
+    var firstQuery = fireStoreDb
+        .collection(collectionConversation)
+        .where("sender", isEqualTo: email)
+        .snapshots();
+
+    var secondQuery = fireStoreDb
+        .collection(collectionConversation)
+        .where("receiver", isEqualTo: email)
+        .snapshots();
+    streams.add(firstQuery);
+    streams.add(secondQuery);
+    Stream<QuerySnapshot<Map<String, dynamic>>> results =
+        StreamGroup.merge(streams);
+    // await for (var res in results) {
+    //   for (var docsResult in res.docs) {
+    //     print('docsResult${docsResult.data()}');
+    //     return MessageConversationModel.fromJson(docsResult.data());
+    //   }
+    // }
+    return results;
   }
 }
