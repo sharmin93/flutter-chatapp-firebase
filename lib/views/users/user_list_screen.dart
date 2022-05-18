@@ -21,7 +21,8 @@ class UserListScreen extends StatefulWidget {
 class _UserListScreenState extends State<UserListScreen> {
   late final firebaseData = FirebaseDbData();
   UsersInfoModel? usersInfoModel;
-  List userList = ['fly.com', 'fig.com', 'check.com', 'abc.com'];
+  final MessageController messageController=MessageController();
+  List userList = ['tom@flyhub.com', 'figma@flyhub.com', 'cheku@yopmail.com', 'abc@yomail.com'];
 
   @override
   @override
@@ -42,7 +43,8 @@ class _UserListScreenState extends State<UserListScreen> {
                       create: (_) => MessageController(),
                       child: Consumer<MessageController>(
                         builder: (context, messageController, __) {
-                          return ListView.builder(
+                          return
+                            ListView.builder(
                             itemCount: userList.length,
                             itemBuilder: (context, index) {
                               return InkWell(
@@ -51,7 +53,8 @@ class _UserListScreenState extends State<UserListScreen> {
                                       selectedUser: userList[index].toString(),
                                       context: context);
                                 },
-                                child: Padding(
+                                child:
+                                Padding(
                                   padding: EdgeInsets.all(UdDesign.pt(8)),
                                   child: UdCard(
                                     backgroundColor:

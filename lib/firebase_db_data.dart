@@ -5,6 +5,7 @@ import 'package:chat_app_using_firebase/models/message_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:async/async.dart' show StreamGroup;
 import 'package:flutter/foundation.dart';
+
 class FirebaseDbData {
   FirebaseFirestore fireStoreDb = FirebaseFirestore.instance;
   String collectionConversation = "conversations";
@@ -43,26 +44,13 @@ class FirebaseDbData {
     return ref.id; // have existing conversation
   }
 
-  /// get messages by conversationId//
-  // Future<MessageConversationModel?> getConversationById(String conversationId) async {
-  //   var dataSnapshot = await fireStoreDb
-  //       .collection(collectionConversation)
-  //       .doc(conversationId)
-  //       .get();
-  //   if (dataSnapshot.exists) {
-  //     return MessageConversationModel.fromJson(dataSnapshot.data()!);
-  //   } else {
-  //     return null;
-  //   }
-  // }
-
   saveMessageToDb(String conversationId, Messages messages) {
     fireStoreDb.collection(collectionConversation).doc(conversationId).update({
       "messages": FieldValue.arrayUnion([messages.toJson()])
     });
   }
 
-  // Exception
+
   getQueryMessages(conversationId) {
     return FirebaseFirestore.instance
         .collection(collectionConversation)
@@ -70,74 +58,12 @@ class FirebaseDbData {
         .snapshots();
   }
 
-///using get() to  query ///
-  Future<List<MessageConversationModel>> getInboxMessages(email) async {
-    List<MessageConversationModel> returnValue =[];
-    var firstSnapshot = await fireStoreDb
-        .collection(collectionConversation)
-        .where("sender", isEqualTo: email).get();
-
-    var secondSnapshot = await fireStoreDb
-        .collection(collectionConversation)
-        .where("receiver", isEqualTo: email).get();
-
-    for (var conversation in firstSnapshot.docs) {
-      returnValue.add(MessageConversationModel.fromJson(conversation.data()));
-    }
-    for (var conversation in secondSnapshot.docs) {
-      returnValue.add(MessageConversationModel.fromJson(conversation.data()));
-    }
-    return returnValue;
-  }
-
-
-  ///using stream//
-  ///
-  // Stream<QuerySnapshot> getInboxMessages(email)  {
-  //
-  //   List<Stream<QuerySnapshot>> streams = [];
-  //
-  //   var firstQuery = fireStoreDb
-  //       .collection(collectionConversation)
-  //       .where("sender", isEqualTo: email).snapshots();
-  //
-  //
-  //   var secondQuery = fireStoreDb
-  //       .collection(collectionConversation)
-  //       .where("receiver", isEqualTo: email).snapshots();
-  //
-  //   streams.add(secondQuery);
-  //   streams.add(firstQuery);
-  //
-  //   Stream<QuerySnapshot> results = StreamGroup.merge(streams);
-  //
-  //
-  //   return results;
-  // }
-
-
   inboxQueryMessage(email) {
-    List<Stream<QuerySnapshot<Map<String, dynamic>>>> streams = [];
-    List<MessageConversationModel> returnValue =[];
     var firstQuery = fireStoreDb
         .collection(collectionConversation)
-        .where("sender", isEqualTo: email)
+        .where(FieldPath([email]), isEqualTo: true)
         .snapshots();
 
-    var secondQuery = fireStoreDb
-        .collection(collectionConversation)
-        .where("receiver", isEqualTo: email)
-        .snapshots();
-    streams.add(firstQuery);
-    streams.add(secondQuery);
-    Stream<QuerySnapshot<Map<String, dynamic>>> results = StreamGroup.merge(streams);
-
-    // await for (var res in results) {
-    //   for (var docsResult in res.docs) {
-    //     print('docsResult${docsResult.data()}');
-    //     return MessageConversationModel.fromJson(docsResult.data());
-    //   }
-    // }
-    return results;
+    return firstQuery;
   }
 }

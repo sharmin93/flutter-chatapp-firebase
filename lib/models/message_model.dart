@@ -25,6 +25,8 @@ class MessageConversationModel {
     }
     data['sender'] = this.sender;
     data['receiver'] = this.receiver;
+    data[this.sender!] = true;
+    data[this.receiver!] = true;
     return data;
   }
 }

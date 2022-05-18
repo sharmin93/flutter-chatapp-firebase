@@ -22,7 +22,8 @@ class MessagesBody extends StatelessWidget {
         itemBuilder: (context, index) {
           DateTime? date =
               messagesConversationsData?.messages![index].date!.toDate();
-          return Padding(
+          return
+            Padding(
             padding: EdgeInsets.all(UdDesign.pt(10)),
             child: UdCard(
               backgroundColor: userEmail ==

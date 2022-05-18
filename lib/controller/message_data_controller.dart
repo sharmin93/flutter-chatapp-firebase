@@ -17,11 +17,14 @@ class MessageController extends ChangeNotifier {
   List<MessageConversationModel> inboxList = [];
 
   checkMessagesConversations({selectedUser, context}) {
+ //init
     firebaseData.getConversationId(userEmail, selectedUser).then((value) {
+
       if (value == null) {
         firebaseData
             .createConversation(userEmail, selectedUser)
             .then((createValue) {
+              //loaded
           if (createValue != null) {
             Navigator.push(
               context,
@@ -33,7 +36,9 @@ class MessageController extends ChangeNotifier {
             );
           }
         });
-      } else {
+      }
+      else {
+        // loaded
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -43,6 +48,7 @@ class MessageController extends ChangeNotifier {
           ),
         );
       }
+
     });
   }
 
@@ -52,9 +58,4 @@ class MessageController extends ChangeNotifier {
     firebaseData.saveMessageToDb(conversationId!, messages);
   }
 
-  getMessagedUserList(String email) async {
-    var list = await firebaseData.getInboxMessages(email);
-    inboxList = list as List<MessageConversationModel>;
-    notifyListeners();
-  }
 }
