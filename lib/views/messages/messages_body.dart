@@ -22,17 +22,16 @@ class MessagesBody extends StatelessWidget {
         itemBuilder: (context, index) {
           DateTime? date =
               messagesConversationsData?.messages![index].date!.toDate();
-          return
-            Padding(
-            padding: EdgeInsets.all(UdDesign.pt(10)),
+          return Padding(
+            padding: EdgeInsets.all(UdDesign.pt(20)),
             child: UdCard(
               backgroundColor: userEmail ==
                       messagesConversationsData?.messages?[index].sender
                   ? ProjectColors.grey40.withOpacity(0.2)
                   : ProjectColors.blue.withOpacity(0.2),
               disableShadow: true,
-              paddingHorizontal: UdDesign.pt(16),
-              paddingVertical: UdDesign.pt(16),
+              paddingHorizontal: UdDesign.pt(15),
+              paddingVertical: UdDesign.pt(12),
               borderRadius: UdDesign.pt(10),
               child: Column(
                 crossAxisAlignment: userEmail ==
@@ -50,7 +49,10 @@ class MessagesBody extends StatelessWidget {
                     value: 8,
                   ),
                   Align(
-                    alignment: Alignment.bottomRight,
+                    alignment: userEmail ==
+                            messagesConversationsData?.messages?[index].sender
+                        ? Alignment.bottomRight
+                        : Alignment.bottomLeft,
                     child: UdText(
                       text: messagesConversationsData?.messages![index].date !=
                               null
