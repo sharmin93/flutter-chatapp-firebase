@@ -65,18 +65,21 @@ class _ChatRoomState extends State<ChatRoom> {
                   size: UdDesign.pt(24),
                 ),
               ),
+              UdGapX(
+                value: 4,
+              ),
               UdShape(
-                size: UdDesign.pt(30),
+                size: UdDesign.pt(25),
                 radius: UdDesign.pt(20),
-                color: ProjectColors.blue,
+                color: ProjectColors.white,
                 child: Icon(
                   Icons.person_rounded,
-                  color: ProjectColors.white,
+                  color: ProjectColors.blue,
                   size: UdDesign.pt(25),
                 ),
               ),
               UdGapX(
-                value: 4,
+                value: 6,
               ),
               UdText(
                 text: userEmail.replaceAll('@yopmail.com', ''),
@@ -124,9 +127,11 @@ class _ChatRoomState extends State<ChatRoom> {
                           value: 20,
                         ),
                         UdTapper(
-                          child: const Icon(Icons.send_sharp),
+                          child: const Icon(
+                            Icons.send_rounded,
+                            color: ProjectColors.blue,
+                          ),
                           onTap: () {
-                            //Todo
                             messageController.sendMessage(
                                 text: _messageTextController.text,
                                 conversationId: widget.conversationId);

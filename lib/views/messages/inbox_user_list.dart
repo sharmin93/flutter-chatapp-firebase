@@ -49,7 +49,7 @@ class InboxUserList extends StatelessWidget {
           disableShadow: true,
           paddingHorizontal: UdDesign.pt(16),
           paddingVertical: UdDesign.pt(16),
-          borderRadius: UdDesign.pt(10),
+          borderRadius: UdDesign.pt(5),
           child: Row(
             children: [
               UdShape(
@@ -85,44 +85,78 @@ class InboxUserList extends StatelessWidget {
                     UdGapY(
                       value: 4,
                     ),
-                    // UdText(
-                    //     text:
-                    //         'email: ${userEmail == messageConversationData.sender ? messageConversationData.receiver.toString() : messageConversationData.sender.toString()}'),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.only(right: UdDesign.pt(4)),
-                            child: UdText(
-                              text: messageConversationData.messages != null &&
-                                      messageConversationData
-                                          .messages!.isNotEmpty
-                                  ? '${messageConversationData.messages![messageConversationData.messages!.length - 1].text}'
-                                  : '',
-                              fontSize: UdDesign.fontSize(14),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ),
+                        messageConversationData
+                                    .messages![messageConversationData
+                                            .messages!.length -
+                                        1]
+                                    .text!
+                                    .length >
+                                30
+                            ? Expanded(
+                                child: Padding(
+                                  padding:
+                                      EdgeInsets.only(right: UdDesign.pt(4)),
+                                  child: UdText(
+                                    text: messageConversationData.messages !=
+                                                null &&
+                                            messageConversationData
+                                                .messages!.isNotEmpty
+                                        ? '${messageConversationData.messages![messageConversationData.messages!.length - 1].text}'
+                                        : '',
+                                    fontSize: UdDesign.fontSize(14),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              )
+                            : Padding(
+                                padding: EdgeInsets.only(right: UdDesign.pt(4)),
+                                child: UdText(
+                                  text: messageConversationData.messages !=
+                                              null &&
+                                          messageConversationData
+                                              .messages!.isNotEmpty
+                                      ? '${messageConversationData.messages![messageConversationData.messages!.length - 1].text}'
+                                      : '',
+                                  fontSize: UdDesign.fontSize(14),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
                         UdGapY(
-                          value: 8,
+                          value: 10,
                         ),
                         Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            UdText(
-                              text: messageConversationData.messages != null &&
-                                      messageConversationData
-                                          .messages!.isNotEmpty
-                                  ? DateFormat('hh:mm a').format(
-                                      DateTime.parse(date.toString()).toLocal(),
-                                    )
-                                  : '',
-                              fontSize: UdDesign.fontSize(12),
-                              fontWeight: FontWeight.w500,
-                              color: ProjectColors.black.withOpacity(0.5),
+                            Container(
+                              width: 3,
+                              height: 3,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: ProjectColors.grey40,
+                              ),
+                            ),
+                            UdGapX(
+                              value: 3,
+                            ),
+                            Center(
+                              child: UdText(
+                                text:
+                                    messageConversationData.messages != null &&
+                                            messageConversationData
+                                                .messages!.isNotEmpty
+                                        ? DateFormat('dd MMMM').format(
+                                            DateTime.parse(date.toString())
+                                                .toLocal(),
+                                          )
+                                        : '',
+                                fontSize: UdDesign.fontSize(12),
+                                fontWeight: FontWeight.w500,
+                                color: ProjectColors.black.withOpacity(0.5),
+                              ),
                             ),
                           ],
                         ),

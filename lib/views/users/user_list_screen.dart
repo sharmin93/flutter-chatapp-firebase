@@ -33,11 +33,40 @@ class _UserListScreenState extends State<UserListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: UdText(
-          text: 'Select Contact',
-          color: ProjectColors.white,
+      appBar: UdAppBar(
+        context: context,
+        customLeft: UdTapper(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              UdCard(
+                paddingHorizontal: 0,
+                paddingVertical: 0,
+                height: UdDesign.pt(25),
+                width: UdDesign.pt(25),
+                borderColor: ProjectColors.transparent,
+                borderRadius: UdDesign.pt(1),
+                backgroundColor: Colors.transparent,
+                child: Icon(
+                  Icons.arrow_back,
+                  color: ProjectColors.white,
+                  size: UdDesign.pt(24),
+                ),
+              ),
+              UdGapX(
+                value: 4,
+              ),
+              UdText(
+                text: 'Select Contact',
+                color: ProjectColors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: UdDesign.fontSize(16),
+              )
+            ],
+          ),
         ),
       ),
       body: Column(
@@ -59,47 +88,40 @@ class _UserListScreenState extends State<UserListScreen> {
                                 },
                                 child: Padding(
                                   padding: EdgeInsets.all(UdDesign.pt(8)),
-                                  child: UdCard(
-                                    backgroundColor:
-                                        ProjectColors.grey40.withOpacity(0.2),
-                                    disableShadow: true,
-                                    paddingHorizontal: UdDesign.pt(16),
-                                    paddingVertical: UdDesign.pt(16),
-                                    borderRadius: UdDesign.pt(10),
-                                    child: Row(
-                                      children: [
-                                        UdShape(
-                                          size: UdDesign.pt(30),
-                                          radius: UdDesign.pt(20),
-                                          color: ProjectColors.blue,
-                                          child: Icon(
-                                            Icons.person_rounded,
-                                            color: ProjectColors.white,
-                                            size: UdDesign.pt(25),
+                                  child: Row(
+                                    children: [
+                                      UdShape(
+                                        size: UdDesign.pt(30),
+                                        radius: UdDesign.pt(20),
+                                        color: ProjectColors.blue,
+                                        child: Icon(
+                                          Icons.person_rounded,
+                                          color: ProjectColors.white,
+                                          size: UdDesign.pt(25),
+                                        ),
+                                      ),
+                                      UdGapX(
+                                        value: 10,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          UdText(
+                                            text: userList[index]
+                                                .toString()
+                                                .split("@")[0]
+                                                .replaceAll(".com", ""),
+                                            color: ProjectColors.black,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: UdDesign.fontSize(14),
                                           ),
-                                        ),
-                                        UdGapX(
-                                          value: 10,
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            UdText(
-                                                text: userList[index]
-                                                    .toString()
-                                                    .split("@")[0]
-                                                    .replaceAll(".com", "")),
-                                            UdGapY(
-                                              value: 4,
-                                            ),
-                                            UdText(
-                                                text:
-                                                    userList[index].toString()),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
+                                          UdGapY(
+                                            value: 4,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
                                 ),
                               );

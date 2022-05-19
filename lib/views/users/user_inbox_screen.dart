@@ -19,65 +19,61 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.all(UdDesign.pt(16)),
+      body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            UdGapY(
-              value: 40,
-            ),
-            UdText(
-              text: 'Chat',
-              fontSize: UdDesign.fontSize(16),
-              color: ProjectColors.blue,
-            ),
-            UdGapY(
-              value: 8,
-            ),
             UdCard(
-              backgroundColor: ProjectColors.grey40.withOpacity(0.2),
-              disableShadow: true,
-              paddingHorizontal: UdDesign.pt(16),
-              paddingVertical: UdDesign.pt(16),
-              borderRadius: UdDesign.pt(10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              backgroundColor: Colors.blue,
+              shadowOffset: const Offset(0, -1),
+              width: double.infinity,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  UdGapY(
+                    value: 30,
+                  ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      UdShape(
-                        size: UdDesign.pt(30),
-                        radius: UdDesign.pt(20),
-                        color: ProjectColors.blue,
+                      Row(
+                        children: [
+                          UdShape(
+                            size: UdDesign.pt(30),
+                            radius: UdDesign.pt(20),
+                            color: ProjectColors.white,
+                            child: Icon(
+                              Icons.person_rounded,
+                              color: ProjectColors.blue,
+                              size: UdDesign.pt(25),
+                            ),
+                          ),
+                          UdGapX(
+                            value: 8,
+                          ),
+                          UdText(
+                            text: userEmail,
+                            color: ProjectColors.white,
+                            fontSize: UdDesign.fontSize(16),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ],
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const UserListScreen()),
+                          );
+                        },
                         child: Icon(
-                          Icons.person_rounded,
-                          color: ProjectColors.white,
-                          size: UdDesign.pt(25),
+                          Icons.add_circle_outline,
+                          color: Colors.white,
+                          size: UdDesign.pt(30),
                         ),
                       ),
-                      UdGapX(
-                        value: 8,
-                      ),
-                      UdText(
-                        text: userEmail,
-                        color: ProjectColors.black,
-                        fontSize: UdDesign.fontSize(14),
-                      ),
                     ],
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const UserListScreen()),
-                      );
-                    },
-                    child: const Icon(
-                      Icons.add_circle_outline,
-                      color: Colors.black,
-                    ),
                   ),
                 ],
               ),
@@ -85,7 +81,22 @@ class _UserInboxScreenState extends State<UserInboxScreen> {
             UdGapY(
               value: 10,
             ),
-            const Expanded(child: MessagedUserList()),
+            Padding(
+              padding:
+                  EdgeInsets.only(left: UdDesign.pt(10), top: UdDesign.pt(10)),
+              child: UdText(
+                text: 'Messages',
+                fontSize: UdDesign.fontSize(18),
+                color: ProjectColors.blue,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            UdGapY(
+              value: 10,
+            ),
+            const Expanded(
+              child: MessagedUserList(),
+            ),
           ],
         ),
       ),
