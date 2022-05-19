@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chat_app_using_firebase/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,12 +10,10 @@ import 'package:ud_widgets/widgets/gaps/gapy.dart';
 import 'package:ud_widgets/widgets/shapes/shape.dart';
 import 'package:ud_widgets/widgets/texts/text.dart';
 
-import '../../controller/message_data_controller.dart';
-import '../../firebase_db_data.dart';
-import '../../models/message_model.dart';
-import '../../utilities/constants/colors.dart';
 import '../../firebase_db_data.dart';
 import '../../main.dart';
+import '../../models/message_model.dart';
+import '../../utilities/constants/colors.dart';
 import 'chat_room.dart';
 
 class MessagedUserList extends StatefulWidget {
@@ -54,16 +51,17 @@ class _MessagedUserListState extends State<MessagedUserList> {
                           MessageConversationModel.fromJson(
                               qs.docs[index].data()! as Map<String, dynamic>);
 
-                      return InkWell(onTap: (){
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ChatRoom(
-                              conversationId: qs.docs[index].id,
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ChatRoom(
+                                conversationId: qs.docs[index].id,
+                              ),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
                         child: Padding(
                           padding: EdgeInsets.all(UdDesign.pt(8)),
                           child: UdCard(
@@ -95,25 +93,27 @@ class _MessagedUserListState extends State<MessagedUserList> {
                                         text: userEmail ==
                                                 messageConversationData.sender
                                             ? messageConversationData.receiver
-                                                .toString().split("@")[0].replaceAll(".com", "")
-                                            : messageConversationData.sender.toString().split("@")[0].replaceAll(".com", "")),
+                                                .toString()
+                                                .split("@")[0]
+                                                .replaceAll(".com", "")
+                                            : messageConversationData.sender
+                                                .toString()
+                                                .split("@")[0]
+                                                .replaceAll(".com", "")),
                                     UdGapY(
                                       value: 4,
                                     ),
                                     UdText(
-                                        text: userEmail ==
-                                                messageConversationData.sender
-                                            ? messageConversationData.receiver
-                                                .toString()
-                                            : messageConversationData.sender
-                                                .toString()),
+                                        text:
+                                            'email: ${userEmail == messageConversationData.sender ? messageConversationData.receiver.toString() : messageConversationData.sender.toString()}'),
                                     UdText(
                                         text: messageConversationData
-                                            .messages!=null && messageConversationData
-                                            .messages!.isNotEmpty?
-                                        messageConversationData
-                                            .messages![messageConversationData
-                                                    .messages!.length - 1].text:''),
+                                                        .messages !=
+                                                    null &&
+                                                messageConversationData
+                                                    .messages!.isNotEmpty
+                                            ? 'Latest message: ${messageConversationData.messages![messageConversationData.messages!.length - 1].text}'
+                                            : ''),
                                   ],
                                 ),
                               ],
