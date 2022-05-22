@@ -19,14 +19,14 @@ class MessageConversationModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.messages != null) {
-      data['messages'] = this.messages!.map((v) => v.toJson()).toList();
+      data['messages'] = messages!.map((v) => v.toJson()).toList();
     }
     data['sender'] = this.sender;
-    data['receiver'] = this.receiver;
-    data[this.sender!] = true;
-    data[this.receiver!] = true;
+    data['receiver'] = receiver;
+    data[sender!] = true;
+    data[receiver!] = true;
     return data;
   }
 }
@@ -35,20 +35,26 @@ class Messages {
   Timestamp? date;
   String? sender;
   String? text;
+  String? messageType;
+  String? imagePath;
 
-  Messages({this.date, this.sender, this.text});
+  Messages({this.date, this.sender, this.text, this.messageType, imagePath});
 
   Messages.fromJson(Map<String, dynamic> json) {
     date = json['date'];
     sender = json['sender'];
     text = json['text'];
+    messageType = json['messageType'];
+    imagePath = json['imagePath'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['date'] = date;
-    data['sender'] = this.sender;
-    data['text'] = this.text;
+    data['sender'] = sender;
+    data['text'] = text;
+    data['messageType'] = messageType;
+    data['imagePath'] = imagePath;
     return data;
   }
 }

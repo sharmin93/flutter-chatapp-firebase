@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -13,18 +15,21 @@ class MessageController extends ChangeNotifier {
 
   final firebaseData = FirebaseDbData();
   String? selectedUser;
-
+  File? imageFile;
+  String? imageName;
+  String? imagePath;
+  String? imageUrl;
+  Messages? messages;
   List<MessageConversationModel> inboxList = [];
 
   checkMessagesConversations({selectedUser, context}) {
- //init
+    //init
     firebaseData.getConversationId(userEmail, selectedUser).then((value) {
-
       if (value == null) {
         firebaseData
             .createConversation(userEmail, selectedUser)
             .then((createValue) {
-              //loaded
+          //loaded
           if (createValue != null) {
             Navigator.push(
               context,
@@ -36,8 +41,7 @@ class MessageController extends ChangeNotifier {
             );
           }
         });
-      }
-      else {
+      } else {
         // loaded
         Navigator.push(
           context,
@@ -48,14 +52,12 @@ class MessageController extends ChangeNotifier {
           ),
         );
       }
-
     });
   }
 
   sendMessage({String? text, String? conversationId}) {
-    Messages messages =
-        Messages(text: text, sender: userEmail, date: Timestamp.now());
+    Messages messages = Messages(
+        text: text, sender: userEmail, date: Timestamp.now(), messageType: '');
     firebaseData.saveMessageToDb(conversationId!, messages);
   }
-
 }

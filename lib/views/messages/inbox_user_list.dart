@@ -148,10 +148,27 @@ class InboxUserList extends StatelessWidget {
                                     messageConversationData.messages != null &&
                                             messageConversationData
                                                 .messages!.isNotEmpty
-                                        ? DateFormat('dd MMMM').format(
-                                            DateTime.parse(date.toString())
-                                                .toLocal(),
-                                          )
+                                        ? messageConversationData
+                                                    .messages![
+                                                        messageConversationData
+                                                                .messages!
+                                                                .length -
+                                                            1]
+                                                    .date !=
+                                                null
+                                            ? DateFormat('dd MMMM').format(
+                                                DateTime.parse(messageConversationData
+                                                        .messages![
+                                                            messageConversationData
+                                                                    .messages!
+                                                                    .length -
+                                                                1]
+                                                        .date!
+                                                        .toDate()
+                                                        .toString())
+                                                    .toLocal(),
+                                              )
+                                            : ''
                                         : '',
                                 fontSize: UdDesign.fontSize(12),
                                 fontWeight: FontWeight.w500,

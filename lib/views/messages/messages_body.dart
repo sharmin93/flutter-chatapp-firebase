@@ -22,7 +22,7 @@ class MessagesBody extends StatelessWidget {
         itemCount: messagesConversationsData?.messages?.length,
         itemBuilder: (context, index) {
           DateTime? date =
-              messagesConversationsData?.messages![index].date!.toDate();
+              messagesConversationsData?.messages![index].date?.toDate();
           return Padding(
             padding: EdgeInsets.all(UdDesign.pt(8)),
             child: UdCard(
