@@ -19,7 +19,7 @@ class FirebaseDbData {
   String? imageName;
   String? imagePath;
   String? imageUrl;
-
+  String? imageValueShow;
   Future<String?> getConversationId(String sender, String receiver) async {
     var snapshot = await fireStoreDb
         .collection(collectionConversation)
@@ -86,12 +86,14 @@ class FirebaseDbData {
     });
   }
 
-  Future getImageFromCamera() async {
+  Future getImageFromCamera(conversationId) async {
     ImagePicker imagePicker = ImagePicker();
     await imagePicker.pickImage(source: ImageSource.camera).then((value) {
       if (value != null) {
         imageFile = File(value.path);
-        uploadImage();
+        uploadImage().then((uploadValue) {
+          print('iploadValue${uploadValue}');
+        });
       }
     });
   }
@@ -105,10 +107,7 @@ class FirebaseDbData {
         print('error$error');
       }
     });
-    await uploadTask.ref.getDownloadURL().then((imageUrl) {
-      if (imageUrl != null) {
-        print('imageUrl$imageUrl');
-      }
-    });
+    String imageUrl = await uploadTask.ref.getDownloadURL();
+    return imageUrl;
   }
 }

@@ -122,6 +122,7 @@ class _ChatRoomState extends State<ChatRoom> {
                       //     fontWeight: FontWeight.normal,
                       //   ),
                       // ),
+
                       Expanded(
                         child: Padding(
                           padding: EdgeInsets.only(right: UdDesign.pt(8)),
@@ -194,7 +195,8 @@ class _ChatRoomState extends State<ChatRoom> {
                       ),
                       IconButton(
                         onPressed: () {
-                          firebaseData.getImageFromCamera();
+                          firebaseData
+                              .getImageFromCamera(widget.conversationId);
                         },
                         icon: const Icon(
                           Icons.camera_alt,
