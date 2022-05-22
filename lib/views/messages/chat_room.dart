@@ -154,7 +154,8 @@ class _ChatRoomState extends State<ChatRoom> {
                                   ),
                                   suffixIcon: IconButton(
                                     onPressed: () {
-                                      firebaseData.getImageFromGallery();
+                                      messageController.sendGalleryImages(
+                                          widget.conversationId);
                                     },
                                     icon: const Icon(
                                       Icons.image,
@@ -195,8 +196,8 @@ class _ChatRoomState extends State<ChatRoom> {
                       ),
                       IconButton(
                         onPressed: () {
-                          firebaseData
-                              .getImageFromCamera(widget.conversationId);
+                          messageController
+                              .sendCameraImages(widget.conversationId);
                         },
                         icon: const Icon(
                           Icons.camera_alt,

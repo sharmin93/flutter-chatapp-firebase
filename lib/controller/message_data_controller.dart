@@ -34,9 +34,10 @@ class MessageController extends ChangeNotifier {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ChatRoom(
-                  conversationId: createValue,
-                ),
+                builder: (context) =>
+                    ChatRoom(
+                      conversationId: createValue,
+                    ),
               ),
             );
           }
@@ -46,9 +47,10 @@ class MessageController extends ChangeNotifier {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ChatRoom(
-              conversationId: value,
-            ),
+            builder: (context) =>
+                ChatRoom(
+                  conversationId: value,
+                ),
           ),
         );
       }
@@ -57,7 +59,34 @@ class MessageController extends ChangeNotifier {
 
   sendMessage({String? text, String? conversationId}) {
     Messages messages = Messages(
-        text: text, sender: userEmail, date: Timestamp.now(), messageType: '');
+        text: text, sender: userEmail, date: Timestamp.now(), messageType: 'text');
+    firebaseData.saveMessageToDb(conversationId!, messages);
+  }
+
+  sendCameraImages( String? conversationId) async {
+    var imagePath = await firebaseData.getImageFromCamera();
+    if (kDebugMode) {
+      print('${imagePath.toString()}');
+    }
+    Messages messages = Messages(
+        text: '',
+        sender: userEmail,
+        date: Timestamp.now(),
+        messageType: 'media',
+        imagePath:imagePath);
+    firebaseData.saveMessageToDb(conversationId!, messages);
+  }
+  sendGalleryImages( String? conversationId) async {
+    var imagePath = await firebaseData.getImageFromGallery();
+    if (kDebugMode) {
+      print('${imagePath.toString()}');
+    }
+    Messages messages = Messages(
+        text: '',
+        sender: userEmail,
+        date: Timestamp.now(),
+        messageType: 'media',
+        imagePath:imagePath);
     firebaseData.saveMessageToDb(conversationId!, messages);
   }
 }

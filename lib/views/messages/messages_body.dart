@@ -50,6 +50,7 @@ class MessagesBody extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                       color: ProjectColors.blue,
                     ),
+                    Image.network('${messagesConversationsData?.messages?[index].imagePath}'),
                     UdGapY(
                       value: 6,
                     ),

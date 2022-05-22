@@ -38,7 +38,7 @@ class Messages {
   String? messageType;
   String? imagePath;
 
-  Messages({this.date, this.sender, this.text, this.messageType, imagePath});
+  Messages({this.date, this.sender, this.text, this.messageType, this.imagePath});
 
   Messages.fromJson(Map<String, dynamic> json) {
     date = json['date'];
