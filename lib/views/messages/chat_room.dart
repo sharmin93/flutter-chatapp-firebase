@@ -154,7 +154,7 @@ class _ChatRoomState extends State<ChatRoom> {
                                   ),
                                   suffixIcon: IconButton(
                                     onPressed: () {
-                                      messageController.sendGalleryImages(
+                                      messageController.checkGalleryPermission(
                                           widget.conversationId);
                                     },
                                     icon: const Icon(
@@ -197,7 +197,7 @@ class _ChatRoomState extends State<ChatRoom> {
                       IconButton(
                         onPressed: () {
                           messageController
-                              .checkPermission(widget.conversationId);
+                              .checkCameraPermission(widget.conversationId);
                         },
                         icon: const Icon(
                           Icons.camera_alt,

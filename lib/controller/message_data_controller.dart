@@ -66,11 +66,12 @@ class MessageController extends ChangeNotifier {
   }
 
   ///check storage Permission//
-  Future checkPermission(String? conversationId) async {
+  Future checkCameraPermission(String? conversationId) async {
     final PermissionStatus status = await Permission.camera.request();
+
     if (status.isGranted) {
       if (kDebugMode) {
-        print('permissionStatus$status');
+        print('permissionStatus${status}');
       }
       await sendCameraImages(conversationId);
     }
@@ -78,14 +79,41 @@ class MessageController extends ChangeNotifier {
       final PermissionStatus status = await Permission.camera.request();
       if (kDebugMode) {
         print('Please give camera permission');
-        print('permissionStatus$status');
+        print('permissionStatus${status}');
+      }
+    }
+    if (status.isRestricted || status.isPermanentlyDenied) {
+      await openAppSettings();
+
+      if (kDebugMode) {
+        print('change setting');
+        print('permissionStatus${status}');
+      }
+    }
+    notifyListeners();
+  }
+
+  Future checkGalleryPermission(String? conversationId) async {
+    final PermissionStatus status = await Permission.storage.request();
+
+    if (status.isGranted) {
+      if (kDebugMode) {
+        print('permissionStatus${status}');
+      }
+      await sendGalleryImages(conversationId);
+    }
+    if (status.isDenied || status.isLimited) {
+      await Permission.storage.request();
+      if (kDebugMode) {
+        print('Please give storage permission');
+        print('permissionStatus${status}');
       }
     }
     if (status.isRestricted || status.isPermanentlyDenied) {
       await openAppSettings();
       if (kDebugMode) {
         print('change setting');
-        print('permissionStatus$status');
+        print('permissionStatus${status}');
       }
     }
     notifyListeners();
