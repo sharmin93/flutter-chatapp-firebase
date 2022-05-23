@@ -13,6 +13,7 @@ class FirebaseDbData {
   FirebaseStorage firebaseStorage = FirebaseStorage.instance;
   String collectionConversation = "conversations";
   Messages messages = Messages();
+  ImagePicker imagePicker = ImagePicker();
   String imageCollection = "images";
   List<Stream<QuerySnapshot>>? results;
   File? imageFile;
@@ -78,49 +79,69 @@ class FirebaseDbData {
 
   ///image storage function//
   Future getImageFromGallery() async {
-    ImagePicker imagePicker = ImagePicker();
     XFile? value = await imagePicker.pickImage(source: ImageSource.gallery);
     if (kDebugMode) {
       print('gallery$value');
     }
-    if (value != null) {
-      imageFile = File(value.path);
-      var uploadedImage = await uploadImage();
-      if (uploadedImage != null) {
-        imageUrl = uploadedImage;
-        if (kDebugMode) {
-          print('GalleryImageUrl$imageUrl');
-        }
-        return imageUrl;
-      }
+    if (value == null) {
+      return null;
     }
+    imageFile = File(value.path);
+    var uploadedImage = await uploadImage();
+    if (uploadedImage != null) {
+      imageUrl = uploadedImage;
+      if (kDebugMode) {
+        print('GalleryImageUrl$imageUrl');
+      }
+      return imageUrl;
+    }
+    // if (value != null) {
+    //   imageFile = File(value.path);
+    //   var uploadedImage = await uploadImage();
+    //   if (uploadedImage != null) {
+    //     imageUrl = uploadedImage;
+    //     if (kDebugMode) {
+    //       print('GalleryImageUrl$imageUrl');
+    //     }
+    //     return imageUrl;
+    //   }
+    // }
   }
 
   Future getImageFromCamera() async {
-    ImagePicker imagePicker = ImagePicker();
-    var value = await imagePicker.pickImage(source: ImageSource.camera);
-    if (value != null) {
-      imageFile = File(value.path);
-      var uploadedImage = await uploadImage();
-      if (uploadedImage != null) {
-        imageUrl = uploadedImage;
-        if (kDebugMode) {
-          print('imageUrl$imageUrl');
-        }
-        return imageUrl;
+    XFile? value = await imagePicker.pickImage(source: ImageSource.camera);
+    if (kDebugMode) {
+      print('gallery$value');
+    }
+    if (value == null) {
+      return null;
+    }
+    imageFile = File(value.path);
+    if (kDebugMode) {
+      print('iamgeFile$imageFile');
+    }
+    var uploadedImage = await uploadImage();
+
+    if (uploadedImage != null) {
+      imageUrl = uploadedImage;
+      if (kDebugMode) {
+        print('imageUrl$imageUrl');
       }
-    } else {}
+      return imageUrl;
+    }
   }
 
   Future uploadImage() async {
     imageName = const Uuid().v1();
     var ref =
         firebaseStorage.ref().child(imageCollection).child("$imageName.jpg");
+
     var uploadTask = await ref.putFile(imageFile!).catchError((error) {
       if (kDebugMode) {
         print('error$error');
       }
     });
+
     String imageUrl = await uploadTask.ref.getDownloadURL();
     return imageUrl;
   }
