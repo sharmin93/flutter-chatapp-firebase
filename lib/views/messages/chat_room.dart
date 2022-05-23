@@ -197,7 +197,7 @@ class _ChatRoomState extends State<ChatRoom> {
                       IconButton(
                         onPressed: () {
                           messageController
-                              .sendCameraImages(widget.conversationId);
+                              .checkPermission(widget.conversationId);
                         },
                         icon: const Icon(
                           Icons.camera_alt,

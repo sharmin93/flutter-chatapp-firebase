@@ -1,6 +1,5 @@
 import 'package:chat_app_using_firebase/utilities/constants/colors.dart';
 import 'package:chat_app_using_firebase/views/users/user_list_screen.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:ud_design/ud_design.dart';
 import 'package:ud_widgets/ud_widgets.dart';

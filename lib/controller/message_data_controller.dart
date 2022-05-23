@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../firebase_db_data.dart';
 import '../main.dart';
@@ -34,10 +35,9 @@ class MessageController extends ChangeNotifier {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    ChatRoom(
-                      conversationId: createValue,
-                    ),
+                builder: (context) => ChatRoom(
+                  conversationId: createValue,
+                ),
               ),
             );
           }
@@ -47,10 +47,9 @@ class MessageController extends ChangeNotifier {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                ChatRoom(
-                  conversationId: value,
-                ),
+            builder: (context) => ChatRoom(
+              conversationId: value,
+            ),
           ),
         );
       }
@@ -59,34 +58,64 @@ class MessageController extends ChangeNotifier {
 
   sendMessage({String? text, String? conversationId}) {
     Messages messages = Messages(
-        text: text, sender: userEmail, date: Timestamp.now(), messageType: 'text');
+        text: text,
+        sender: userEmail,
+        date: Timestamp.now(),
+        messageType: 'text');
     firebaseData.saveMessageToDb(conversationId!, messages);
   }
 
-  sendCameraImages( String? conversationId) async {
+  ///check storage Permission//
+  Future checkPermission(String? conversationId) async {
+    final PermissionStatus status = await Permission.camera.request();
+    if (status.isGranted) {
+      if (kDebugMode) {
+        print('permissionStatus$status');
+      }
+      await sendCameraImages(conversationId);
+    }
+    if (status.isDenied || status.isLimited) {
+      final PermissionStatus status = await Permission.camera.request();
+      if (kDebugMode) {
+        print('Please give camera permission');
+        print('permissionStatus$status');
+      }
+    }
+    if (status.isRestricted || status.isPermanentlyDenied) {
+      await openAppSettings();
+      if (kDebugMode) {
+        print('change setting');
+        print('permissionStatus$status');
+      }
+    }
+    notifyListeners();
+  }
+
+  sendCameraImages(String? conversationId) async {
     var imagePath = await firebaseData.getImageFromCamera();
     if (kDebugMode) {
-      print('${imagePath.toString()}');
+      print(imagePath);
     }
     Messages messages = Messages(
         text: '',
         sender: userEmail,
         date: Timestamp.now(),
         messageType: 'media',
-        imagePath:imagePath);
+        imagePath: imagePath);
     firebaseData.saveMessageToDb(conversationId!, messages);
   }
-  sendGalleryImages( String? conversationId) async {
+
+  sendGalleryImages(String? conversationId) async {
     var imagePath = await firebaseData.getImageFromGallery();
     if (kDebugMode) {
-      print('${imagePath.toString()}');
+      print(imagePath);
     }
     Messages messages = Messages(
         text: '',
         sender: userEmail,
         date: Timestamp.now(),
         messageType: 'media',
-        imagePath:imagePath);
+        imagePath: imagePath);
     firebaseData.saveMessageToDb(conversationId!, messages);
   }
 }

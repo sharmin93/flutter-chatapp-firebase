@@ -19,7 +19,7 @@ class InboxUserList extends StatelessWidget {
   final int index;
   final MessageConversationModel messageConversationData;
 
-  InboxUserList(
+  const InboxUserList(
       {Key? key,
       required this.snapshot,
       required this.index,
@@ -28,9 +28,9 @@ class InboxUserList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DateTime? date = messageConversationData
-        .messages![messageConversationData.messages!.length - 1].date!
-        .toDate();
+    // DateTime? date = messageConversationData
+    //     .messages![messageConversationData.messages!.length - 1].date!
+    //     .toDate();
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -92,40 +92,53 @@ class InboxUserList extends StatelessWidget {
                                     .messages![messageConversationData
                                             .messages!.length -
                                         1]
-                                    .text!
-                                    .length >
-                                30
-                            ? Expanded(
-                                child: Padding(
-                                  padding:
-                                      EdgeInsets.only(right: UdDesign.pt(4)),
-                                  child: UdText(
-                                    text: messageConversationData.messages !=
-                                                null &&
-                                            messageConversationData
-                                                .messages!.isNotEmpty
-                                        ? '${messageConversationData.messages![messageConversationData.messages!.length - 1].text}'
-                                        : '',
-                                    fontSize: UdDesign.fontSize(14),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
+                                    .messageType ==
+                                'media'
+                            ? Icon(
+                                Icons.image,
+                                color: ProjectColors.black,
+                                size: UdDesign.pt(20),
                               )
-                            : Padding(
-                                padding: EdgeInsets.only(right: UdDesign.pt(4)),
-                                child: UdText(
-                                  text: messageConversationData.messages !=
-                                              null &&
-                                          messageConversationData
-                                              .messages!.isNotEmpty
-                                      ? '${messageConversationData.messages![messageConversationData.messages!.length - 1].text}'
-                                      : '',
-                                  fontSize: UdDesign.fontSize(14),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
+                            : messageConversationData
+                                        .messages![messageConversationData
+                                                .messages!.length -
+                                            1]
+                                        .text!
+                                        .length >
+                                    30
+                                ? Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          right: UdDesign.pt(4)),
+                                      child: UdText(
+                                        text: messageConversationData
+                                                        .messages !=
+                                                    null &&
+                                                messageConversationData
+                                                    .messages!.isNotEmpty
+                                            ? '${messageConversationData.messages![messageConversationData.messages!.length - 1].text}'
+                                            : '',
+                                        fontSize: UdDesign.fontSize(14),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  )
+                                : Padding(
+                                    padding:
+                                        EdgeInsets.only(right: UdDesign.pt(4)),
+                                    child: UdText(
+                                      text: messageConversationData.messages !=
+                                                  null &&
+                                              messageConversationData
+                                                  .messages!.isNotEmpty
+                                          ? '${messageConversationData.messages![messageConversationData.messages!.length - 1].text}'
+                                          : '',
+                                      fontSize: UdDesign.fontSize(14),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
                         UdGapY(
                           value: 10,
                         ),

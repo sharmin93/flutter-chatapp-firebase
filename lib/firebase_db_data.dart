@@ -79,16 +79,20 @@ class FirebaseDbData {
   ///image storage function//
   Future getImageFromGallery() async {
     ImagePicker imagePicker = ImagePicker();
-    var value = await imagePicker.pickImage(source: ImageSource.gallery);
+    XFile? value = await imagePicker.pickImage(source: ImageSource.gallery);
+    if (kDebugMode) {
+      print('gallery$value');
+    }
     if (value != null) {
       imageFile = File(value.path);
       var uploadedImage = await uploadImage();
-
-      imageUrl = uploadedImage;
-      if (kDebugMode) {
-        print('imageUrl$imageUrl');
+      if (uploadedImage != null) {
+        imageUrl = uploadedImage;
+        if (kDebugMode) {
+          print('GalleryImageUrl$imageUrl');
+        }
+        return imageUrl;
       }
-      return imageUrl;
     }
   }
 
@@ -98,13 +102,14 @@ class FirebaseDbData {
     if (value != null) {
       imageFile = File(value.path);
       var uploadedImage = await uploadImage();
-
-      imageUrl = uploadedImage;
-      if (kDebugMode) {
-        print('imageUrl$imageUrl');
+      if (uploadedImage != null) {
+        imageUrl = uploadedImage;
+        if (kDebugMode) {
+          print('imageUrl$imageUrl');
+        }
+        return imageUrl;
       }
-      return imageUrl;
-    }
+    } else {}
   }
 
   Future uploadImage() async {
