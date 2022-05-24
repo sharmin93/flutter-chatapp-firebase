@@ -124,13 +124,15 @@ class MessageController extends ChangeNotifier {
     if (kDebugMode) {
       print(imagePath);
     }
-    Messages messages = Messages(
-        text: '',
-        sender: userEmail,
-        date: Timestamp.now(),
-        messageType: 'media',
-        imagePath: imagePath);
-    firebaseData.saveMessageToDb(conversationId!, messages);
+    if (imagePath != null) {
+      Messages messages = Messages(
+          text: '',
+          sender: userEmail,
+          date: Timestamp.now(),
+          messageType: 'media',
+          imagePath: imagePath);
+      firebaseData.saveMessageToDb(conversationId!, messages);
+    }
   }
 
   sendGalleryImages(String? conversationId) async {
