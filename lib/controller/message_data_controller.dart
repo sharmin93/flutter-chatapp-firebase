@@ -26,34 +26,59 @@ class MessageController extends ChangeNotifier {
   checkMessagesConversations({selectedUser, context}) {
     //init
     firebaseData.getConversationId(userEmail, selectedUser).then((value) {
-      if (value == null) {
-        firebaseData
-            .createConversation(userEmail, selectedUser)
-            .then((createValue) {
-          //loaded
-          if (createValue != null) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ChatRoom(
-                  conversationId: createValue,
-                ),
-              ),
-            );
-          }
-        });
-      } else {
-        // loaded
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ChatRoom(
-              conversationId: value,
-            ),
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ChatRoom(
+            conversationId: value,
+            selectedUser: selectedUser,
+            userEmail: userEmail,
           ),
-        );
-      }
+        ),
+      );
+      // if (value == null) {
+      //   firebaseData
+      //       .createConversation(userEmail, selectedUser)
+      //       .then((createValue) {
+      //     //loaded
+      //     if (createValue != null) {
+      //       Navigator.push(
+      //         context,
+      //         MaterialPageRoute(
+      //           builder: (context) => ChatRoom(
+      //             conversationId: createValue,
+      //           ),
+      //         ),
+      //       );
+      //     }
+      //   });
+      // } else {
+      //   // loaded
+      //   Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => ChatRoom(
+      //         conversationId: value,
+      //       ),
+      //     ),
+      //   );
+      // }
     });
+  }
+
+  Future<String> createConversationSendMessage(String text,
+      String? conversationId, String? userEmail, String? selectedUser) async {
+    if (conversationId == null) {
+      conversationId =
+          await firebaseData.getConversationId(userEmail!, selectedUser!);
+      if (conversationId == null) {
+        conversationId =
+            await firebaseData.createConversation(userEmail, selectedUser);
+      }
+    }
+    sendMessage(text: text, conversationId: conversationId);
+    notifyListeners();
+    return conversationId!;
   }
 
   sendMessage({String? text, String? conversationId}) {

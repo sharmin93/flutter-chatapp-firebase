@@ -44,26 +44,23 @@ class _MessagedUserListState extends State<MessagedUserList> {
                     snapshot.data != null &&
                     snapshot.data != '') {
                   QuerySnapshot qs = snapshot.data;
-                  return ListView.builder(
-                    itemCount: qs.docs.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      MessageConversationModel messageConversationData =
-                          MessageConversationModel.fromJson(
-                              qs.docs[index].data()! as Map<String, dynamic>);
 
-                      if ((userEmail == messageConversationData.sender ||
-                              userEmail == messageConversationData.receiver) &&
-                          (messageConversationData.messages!.isEmpty)) {
-                        return UdText(text: '');
-                      } else {
-                        return InboxUserList(
-                          snapshot: qs,
-                          index: index,
-                          messageConversationData: messageConversationData,
+                  return qs.docs.isEmpty
+                      ? const Text('no message')
+                      : ListView.builder(
+                          itemCount: qs.docs.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            MessageConversationModel messageConversationData =
+                                MessageConversationModel.fromJson(qs.docs[index]
+                                    .data()! as Map<String, dynamic>);
+
+                            return InboxUserList(
+                              snapshot: qs,
+                              index: index,
+                              messageConversationData: messageConversationData,
+                            );
+                          },
                         );
-                      }
-                    },
-                  );
                 } else {
                   return const Center(child: CircularProgressIndicator());
                 }

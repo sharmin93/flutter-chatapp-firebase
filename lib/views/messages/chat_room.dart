@@ -14,12 +14,12 @@ import '../../utilities/constants/colors.dart';
 import '../users/user_inbox_screen.dart';
 
 class ChatRoom extends StatefulWidget {
-  final String? conversationId;
+  String? conversationId;
+  final String? selectedUser;
+  final String? userEmail;
 
-  const ChatRoom({
-    Key? key,
-    this.conversationId,
-  }) : super(key: key);
+  ChatRoom({Key? key, this.conversationId, this.selectedUser, this.userEmail})
+      : super(key: key);
 
   @override
   State<ChatRoom> createState() => _ChatRoomState();
@@ -96,33 +96,15 @@ class _ChatRoomState extends State<ChatRoom> {
             builder: (context, messageController, __) {
               return Column(
                 children: [
+                  widget.conversationId!=null?
                   Expanded(
                     child: GetMessageList(
                         messageConversationModel, widget.conversationId),
-                  ),
+                  ):const Expanded(
+                    child: Text('no message'),),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // SizedBox(
-                      //   width: UdDesign.pt(260),
-                      //   child: UdBasicTextInputField(
-                      //     onChanged: (_) {},
-                      //     controller: _messageTextController,
-                      //     disableShadow: true,
-                      //     borderColor: Colors.black,
-                      //     borderRadius: UdDesign.pt(5),
-                      //     borderWidth: UdDesign.pt(1),
-                      //     width: double.infinity,
-                      //     textAlignment: TextAlign.start,
-                      //     padding: EdgeInsets.only(
-                      //       left: UdDesign.pt(8),
-                      //     ),
-                      //     hintText: "Write something",
-                      //     fontSize: UdDesign.fontSize(14),
-                      //     fontWeight: FontWeight.normal,
-                      //   ),
-                      // ),
-
                       Expanded(
                         child: Padding(
                           padding: EdgeInsets.only(right: UdDesign.pt(8)),
@@ -209,12 +191,22 @@ class _ChatRoomState extends State<ChatRoom> {
                           Icons.send_rounded,
                           color: ProjectColors.blue,
                         ),
-                        onTap: () {
-                          _messageTextController.text.isNotEmpty
-                              ? messageController.sendMessage(
+                        onTap: () async {
+                          if (_messageTextController.text.isNotEmpty) {
+                            if (widget.conversationId == null) {
+                              widget.conversationId = await messageController
+                                  .createConversationSendMessage(
+                                      _messageTextController.text,
+                                      widget.conversationId,
+                                      userEmail,
+                                      widget.selectedUser);
+                            } else {
+                              messageController.sendMessage(
                                   text: _messageTextController.text,
-                                  conversationId: widget.conversationId)
-                              : const SizedBox();
+                                  conversationId: widget.conversationId);
+                            }
+                          } else {}
+
                           _messageTextController.clear();
                         },
                       )

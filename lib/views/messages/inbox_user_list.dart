@@ -28,9 +28,7 @@ class InboxUserList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // DateTime? date = messageConversationData
-    //     .messages![messageConversationData.messages!.length - 1].date!
-    //     .toDate();
+
     return InkWell(
       onTap: () {
         Navigator.push(

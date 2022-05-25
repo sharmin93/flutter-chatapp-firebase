@@ -95,17 +95,7 @@ class FirebaseDbData {
       }
       return imageUrl;
     }
-    // if (value != null) {
-    //   imageFile = File(value.path);
-    //   var uploadedImage = await uploadImage();
-    //   if (uploadedImage != null) {
-    //     imageUrl = uploadedImage;
-    //     if (kDebugMode) {
-    //       print('GalleryImageUrl$imageUrl');
-    //     }
-    //     return imageUrl;
-    //   }
-    // }
+
   }
 
   Future getImageFromCamera() async {
