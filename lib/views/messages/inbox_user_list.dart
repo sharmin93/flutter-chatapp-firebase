@@ -87,6 +87,8 @@ class InboxUserList extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         messageConversationData
+                            .messages!.length>1 ?
+                        messageConversationData
                                     .messages![messageConversationData
                                             .messages!.length -
                                         1]
@@ -97,14 +99,7 @@ class InboxUserList extends StatelessWidget {
                                 color: ProjectColors.black,
                                 size: UdDesign.pt(20),
                               )
-                            : messageConversationData
-                                        .messages![messageConversationData
-                                                .messages!.length -
-                                            1]
-                                        .text!
-                                        .length >
-                                    30
-                                ? Expanded(
+                            :  Expanded(
                                     child: Padding(
                                       padding: EdgeInsets.only(
                                           right: UdDesign.pt(4)),
@@ -121,22 +116,8 @@ class InboxUserList extends StatelessWidget {
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
-                                  )
-                                : Padding(
-                                    padding:
-                                        EdgeInsets.only(right: UdDesign.pt(4)),
-                                    child: UdText(
-                                      text: messageConversationData.messages !=
-                                                  null &&
-                                              messageConversationData
-                                                  .messages!.isNotEmpty
-                                          ? '${messageConversationData.messages![messageConversationData.messages!.length - 1].text}'
-                                          : '',
-                                      fontSize: UdDesign.fontSize(14),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
+                                  ):const SizedBox(),
+
                         UdGapY(
                           value: 10,
                         ),
